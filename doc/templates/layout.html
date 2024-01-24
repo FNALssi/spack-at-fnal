@@ -1,0 +1,16 @@
+{% extends "!layout.html" %}
+{% block rootrellink %}
+<li>
+  <a href="https://github.com/FNALssi/spack-at-fnal">
+    <img src="{{ pathto('_static/FNALssi.png', 1) }}" alt=""
+         style="vertical-align: middle; margin-top: -2px" />
+    Spack at FNAL
+  </a>{{ reldelim1 }}
+</li>
+{% endblock %}
+
+{# Put some context in the html title element. Workaround for #}
+{# https://bitbucket.org/birkenfeld/sphinx/issue/1492/qthelp-generate-html-title-element-should #}
+{% block htmltitle %}
+  <title>{{ title|striptags|e }} {{ "&mdash;"|safe }} {{ docstitle|e }}</title>
+{% endblock %}
