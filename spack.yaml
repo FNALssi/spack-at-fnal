@@ -20,7 +20,7 @@ spack:
     unify: true
   view:
     default:
-      root: /Users/greenc/work/cet-is/sources/Spack/spack/run/var/spack/environments/cetmodules-docgen/.spack-env/view
+      root: .spack-env/view
       link_type: symlink
       link: all
       projections:
