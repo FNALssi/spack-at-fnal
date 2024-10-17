@@ -56,6 +56,8 @@ spack concretize
 spack install
 ```
 
+Note that when you first build the environment, you should first deactivate and then reactivate the environment.
+
 ### To set up an already-created installation
 
 ```
@@ -74,13 +76,9 @@ spacktivate docgen
 ### Building spack-at-fnal locally
 
 ```
-export SPACK_DISABLE_LOCAL_CONFIG=true
-export SPACK_USER_CACHE_PATH=~/scratch/spack-user-cache
-. <spack-install-dir>/share/spack/setup-env.sh
-spacktivate doc
 mkdir <build-dir>
 cd <build-dir>
-cmake [-GNinja] -DBUILD_DOCS:BOOL=YES <spack-at-fnal-src>
+cmake [-GNinja] -DBUILD_DOCS:BOOL=YES ${SPACK_AT_FNAL_DIR}
 ninja
 ```
 
