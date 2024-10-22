@@ -1,11 +1,11 @@
 # spack-at-fnal
 Documentation describing Spack use at Fermilab.
 
-## Setting up to build spack-at-fnal
+## Set up to build spack-at-fnal
 
 ## On a Mac
 
-### Building prerequisites
+### Build prerequisites
 
 * Building prerequisites will be _much_ faster if you have Spack
   installed, and `git`, `cmake` (at least v3.24) and `gmake` installed
@@ -13,7 +13,7 @@ Documentation describing Spack use at Fermilab.
   
 * For a full list of dependencies, see `spack.yaml`.
 
-* A Python version in the range 3.10 -- 3.12 (spack does not yet support 3.13)
+* A Python version in the range 3.10--3.12 (spack does not yet support 3.13).
   We recommend
 
       brew install python@3.12
@@ -32,14 +32,14 @@ Documentation describing Spack use at Fermilab.
 # One environment variable should be set to define the location of your
 # clone of the spack_at_fnal repository.
 
-export SPACK_AT_FNAL_DIR=/dev/null   # set this correctly for your own installation
+export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installation
 
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.12   # or a different version, if you must
+export SPACK_PYTHON=python3.12  # or a different version, if you must
 
-git clone https://github.com/FNALssi/spack    # we use our own clone
-git clone https://github.com/FNALssi/fnal_art.git # repo for our recipes
+git clone https://github.com/FNALssi/spack  # we use our own clone
+git clone https://github.com/FNALssi/fnal_art.git  # repo for our recipes
 
 source spack/share/spack/setup-env.sh
 spack compiler find
@@ -50,35 +50,35 @@ spack repo add fnal_art
 spack mirror add --type binary --signed --scope site fnal-develop https://scisoft.fnal.gov/scisoft/spack-mirror/spack-fnal-develop
 spack buildcache keys -it
 
-spack env create docgen ${SPACK_AT_FNAL_DIR}/spack.yaml
+spack env create docgen "${SPACK_AT_FNAL_DIR}"/spack.yaml
 spacktivate docgen
 spack concretize
 spack install
 ```
 
-Note that when you first build the environment, you should first deactivate and then reactivate the environment.
+Note that after building the environment, you should first deactivate (`despacktivate`) and then reactivate the environment to ensure that the newly-built packages are available in your `PATH` in the current shell.
 
-### To set up an already-created installation
+### Set up an already-created installation
 
 ```
 # cd to the working directory that you chose, above.
 # It will have the build, fnal_art, spack, and spack-user-cache
 # subdirectories.
 
-export SPACK_AT_FNAL_DIR=/dev/null   # set this correctly for your own installation
+export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installation
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.12   # use the same as you did above
+export SPACK_PYTHON=python3.12  # use the same as you did above
 source spack/share/spack/setup-env.sh
 spacktivate docgen
 ```
 
-### Building spack-at-fnal locally
+### Build spack-at-fnal locally
 
 ```
 mkdir <build-dir>
 cd <build-dir>
-cmake [-GNinja] -DBUILD_DOCS:BOOL=YES ${SPACK_AT_FNAL_DIR}
+cmake [-GNinja] -DBUILD_DOCS:BOOL=YES "${SPACK_AT_FNAL_DIR}"
 ninja
 ```
 
