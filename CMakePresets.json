@@ -1,55 +1,13 @@
 {
-   "configurePresets" : [
-      {
-         "cacheVariables" : {},
-         "description" : "Configuration settings translated from ups/product_deps",
-         "displayName" : "Configuration from product_deps",
-         "hidden" : true,
-         "name" : "from_product_deps"
-      },
-      {
-         "cacheVariables" : {
-            "WANT_UPS" : {
-               "type" : "BOOL",
-               "value" : true
-            },
-            "spack-at-fnal_EXEC_PREFIX_INIT" : {
-               "type" : "STRING",
-               "value" : "$env{CETPKG_FQ_DIR}"
-            },
-            "spack-at-fnal_UPS_BUILD_ONLY_DEPENDENCIES_INIT" : {
-               "type" : "STRING",
-               "value" : "cetmodules;git;python;sphinx"
-            },
-            "spack-at-fnal_UPS_PRODUCT_FLAVOR_INIT" : {
-               "type" : "STRING",
-               "value" : "$env{CETPKG_FLAVOR}"
-            },
-            "spack-at-fnal_UPS_PRODUCT_NAME_INIT" : {
-               "type" : "STRING",
-               "value" : "spack_at_fnal"
+    "configurePresets": [
+        {
+            "name": "default",
+            "hidden": false,
+            "cacheVariables": {
+                "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "CetProvideDependency",
+                "BUILD_DOCS": "ON"
             }
-         },
-         "description" : "Extra configuration for UPS package generation",
-         "displayName" : "UPS extra configuration",
-         "hidden" : true,
-         "name" : "extra_for_UPS"
-      },
-      {
-         "description" : "Default configuration including settings from ups/product_deps",
-         "displayName" : "Default configuration",
-         "inherits" : "from_product_deps",
-         "name" : "default"
-      },
-      {
-         "description" : "Default configuration for UPS package generation",
-         "displayName" : "Default configuration for UPS",
-         "inherits" : [
-            "default",
-            "extra_for_UPS"
-         ],
-         "name" : "for_UPS"
-      }
-   ],
-   "version" : 3
+        }
+    ],
+    "version": 3
 }

@@ -54,26 +54,6 @@ html_favicon = "@CMAKE_CURRENT_SOURCE_DIR@/static/FNALssi-favicon.ico"
 
 html_show_sourcelink = True
 html_theme = "sphinx_rtd_theme"
-html_theme_options = {
-    "bgcolor":          "#ffffff",
-    "codebgcolor":      "#eeeeee",
-    "codetextcolor":    "#333333",
-    "footerbgcolor":    "#00182d",
-    "footertextcolor":  "#ffffff",
-    "headbgcolor":      "#f2f2f2",
-    "headlinkcolor":    "#3d8ff2",
-    "headtextcolor":    "#003564",
-    "linkcolor":        "#2b63a8",
-    "relbarbgcolor":    "#00529b",
-    "relbarlinkcolor":  "#ffffff",
-    "relbartextcolor":  "#ffffff",
-    "sidebarbgcolor":   "#e4ece8",
-    "sidebarbtncolor":  "#00a94f",
-    "sidebarlinkcolor": "#00a94f",
-    "sidebartextcolor": "#333333",
-    "textcolor":        "#444444",
-    "visitedlinkcolor": "#2b63a8",
-}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
