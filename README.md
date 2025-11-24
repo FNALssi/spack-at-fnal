@@ -9,20 +9,24 @@ Documentation describing Spack use at Fermilab.
 
 * Building prerequisites will be _much_ faster if you have Spack
   installed, and `git`, `cmake` (at least v3.24) and `gmake` installed
-  via [homebrew](https://brew.sh/).
-  
+  via [homebrew](https://brew.sh/). Note that `gmake` is an executable
+  installed by the `make` recipe.
+
+
+    brew install cmake git make
+
 * For a full list of dependencies, see `spack.yaml`.
 
 * A Python version in the range 3.10--3.12 (spack does not yet support 3.13).
   We recommend
 
-      brew install python@3.12
+    brew install python@3.12
 
   Look at the output of `python3 -V`. If it is in the range above, all is well.
   If it is not, then export the environment variable `SPACK_PYTHON` to point at
   the correct executable, e.g.:
 
-      export SPACK_PYTHON=python3.12
+    export SPACK_PYTHON=python3.12
 
 ```
 # This will make several directories under your current working directory.
