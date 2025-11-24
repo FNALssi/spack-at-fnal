@@ -5,15 +5,12 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - cetmodules@develop
   - 'cmake@3.24.0:'
-  - 'git@2.22:'
-  - gmake
+  - 'git@2.50:'
   - ninja
   - 'py-sphinx-design@0.2.0:'
   - py-sphinx-rtd-theme
-  - py-sphinx-toolbox
-  - 'py-sphinx@6: ^python@:3.12'
+  - 'py-sphinx@8:'
   - py-sphinxcontrib-jquery
   - 'py-sphinxcontrib-moderncmakedomain@3.25:'
   concretizer:

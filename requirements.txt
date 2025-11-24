@@ -1,0 +1,5 @@
+sphinx-design>=0.2.0
+sphinx-rtd-theme
+sphinx>=8
+sphinxcontrib-jquery
+sphinxcontrib-moderncmakedomain>=3.25
