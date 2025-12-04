@@ -6,7 +6,7 @@ include(FetchContent)
 FetchContent_Declare(
   cetmodules
   GIT_REPOSITORY https://github.com/FNALssi/cetmodules
-  GIT_TAG 4.01.01
+  GIT_TAG develop
   GIT_SHALLOW ON
   FIND_PACKAGE_ARGS 4.01.01
   )

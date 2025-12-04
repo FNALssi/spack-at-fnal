@@ -22,7 +22,7 @@ To deactivate an environment, one uses the ``spack env deactivate`` command:
 
   spack env deactivate
 
-Spack environments are fully documentted at <https://spack.readthedocs.io/en/latest/environments_basics.html>__.
+Spack environments are fully documentted at https://spack.readthedocs.io/en/latest/environments_basics.html.
 
  
 Layered Environments

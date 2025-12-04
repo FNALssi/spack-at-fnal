@@ -17,16 +17,16 @@ Documentation describing Spack use at Fermilab.
 
 * For a full list of dependencies, see `spack.yaml`.
 
-* A Python version in the range 3.10--3.12 (spack does not yet support 3.13).
+* A Python version in the range 3.10--3.13.
   We recommend
 
-    brew install python@3.12
+    brew install python@3.13
 
   Look at the output of `python3 -V`. If it is in the range above, all is well.
   If it is not, then export the environment variable `SPACK_PYTHON` to point at
   the correct executable, e.g.:
 
-    export SPACK_PYTHON=python3.12
+    export SPACK_PYTHON=python3.13
 
 ```
 # This will make several directories under your current working directory.
@@ -40,7 +40,7 @@ export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installati
 
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.12  # or a different version, if you must
+export SPACK_PYTHON=python3.13  # or a different version, if you must
 
 git clone https://github.com/FNALssi/spack  # we use our own clone
 git clone https://github.com/FNALssi/fnal_art.git  # repo for our recipes
@@ -72,7 +72,7 @@ Note that after building the environment, you should first deactivate (`despackt
 export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installation
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.12  # use the same as you did above
+export SPACK_PYTHON=python3.13  # use the same as you did above
 source spack/share/spack/setup-env.sh
 spacktivate docgen
 ```
@@ -82,7 +82,7 @@ spacktivate docgen
 ```
 mkdir <build-dir>
 cd <build-dir>
-cmake [-GNinja] -DBUILD_DOCS:BOOL=YES "${SPACK_AT_FNAL_DIR}"
+cmake [-GNinja] --preset=default "${SPACK_AT_FNAL_DIR}"
 ninja
 ```
 
