@@ -33,13 +33,6 @@ spack:
   - path: https://github.com/fnal-fife/fife-release-configs/raw/refs/tags/2.8.0.1/included_yaml/fife_specs.yaml
     sha256: 080dececfa749775969fe1f8b94ec8779c8143b5939aaf0f83390303c39ff110
 
-#  - DUNE example
-#  - path:  https://raw.githubusercontent.com/DUNE/dune-release-configs/refs/heads/develop/specs-dune.yaml
-#    sha256: ...
-#
-  - path: ./included_yaml/specs-dune.yaml
-  - path: ./included_yaml/packages-dune.yaml
-
   definitions:
 # These are common link dependencies needed by various experiment packages
   - common_dep_specs:
@@ -48,36 +41,26 @@ spack:
       - hdf5@1.12.2
 # These are common runtime dependencies needed by various experiment packages
 #   Justin is DUNE specific but is included because its dependencies affect the LArSoft stack
-      - justin 
+      - justin
 
-# The following definitions should be defined by experiments in exp_packages.yaml and exp_specs.yaml
-# and the path:(urls) and sha256: included above.
-#
-# These are placeholders
-#  - dune_specs:
-#      -  dune-sw %build_compiler
-#  - icarus_specs:
-#      -  icaruscode %build_compiler
-#  - sbn_specs:
-#      -  sbncode %build_compiler
-#  - sbnd_specs:
-#      -  sbndcode %build_compiler
+
 
   specs:
-    - $specs_art
-    - $specs_nusofthep
-    - $specs_larsoft
+    - dune-sw %build_compiler
     - $fife_specs
-    - $dune_specs
     - $common_dep_specs
+
+
+  upstreams:
+    cvmfs-larsoft:
+      install_tree: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/opt/spack
 
   concretizer:
     unify: true
     reuse:
       from:
-      - type: local
-      - type: external
-  view: false
+      - type: environment
+        path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified/
   packages:
     all:
       providers:
@@ -91,5 +74,3 @@ spack:
       - cxxstd=17
       target:
       - x86_64_v3
-    pandorapfa:
-      - ':3'
