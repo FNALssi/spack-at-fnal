@@ -1,0 +1,65 @@
+# This is an example of the packages file that an experiment such as DUNE
+# would maintain to define their own release build.
+
+packages:
+
+  # DUNE packages
+  dune-ana:
+    require:
+    - "@=10.11.01d00"
+  dune-ana-obj:
+    require:
+    - "@=03.11.00"
+  dune-calib:
+    require:
+    - "@=10.11.01d00"
+  dune-core:
+    require:
+    - "@=10.11.01d00"
+  dune-daq-data-formats:
+    require:
+    - "@=4.4.5"
+  dune-data-prep:
+    require:
+    - "@=10.11.01d00"
+  dune-det-data-formats:
+    require:
+    - "@=4.4.5"
+  dune-examples:
+    require:
+    - "@=10.11.01d00"
+  dune-op-det:
+    require:
+    - "@=10.11.01d00"
+  dune-pd-legacy:
+    require:
+    - "@=1.01.05"
+  dune-prototypes:
+    require:
+    - "@=10.11.01d00"
+  dune-reco:
+    require:
+    - "@=10.11.01d00"
+  dune-sim:
+    require:
+    - "@=10.11.01d00"
+  dune-sw:
+    require:
+    - "@=10.11.01d00"
+  dune-util:
+    require:
+    - "@=10.11.01d00"
+  protodune-ana:
+    require:
+    - "@=10.11.01d00"
+
+  # external dependencies
+  geant4:
+    require:
+    - "@10.6.1"
+
+  # FOR NEXT TIME: does this stay here, or doe it only go into dune-release.yaml,
+  # or both, or neither, or what?
+  r-m-dd-config:
+    require:
+    - experiment=dune

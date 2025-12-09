@@ -1,0 +1,65 @@
+# This is an example of the packages file that an experiment such as DUNE
+# would maintain to define their package requirements and constraints
+# as the influence the building of LArSoft.
+
+packages:
+
+  # DUNE packages
+  dune-ana:
+    require:
+    - "@=develop"
+  dune-ana-obj:
+    require:
+    - "@=develop"
+  dune-calib:
+    require:
+    - "@=develop"
+  dune-core:
+    require:
+    - "@=develop"
+  dune-daq-data-formats:
+    require:
+    - "@=develop"
+  dune-data-prep:
+    require:
+    - "@=develop"
+  dune-det-data-formats:
+    require:
+    - "@=develop"
+  dune-examples:
+    require:
+    - "@=develop"
+  dune-op-det:
+    require:
+    - "@=develop"
+  dune-pd-legacy:
+    require:
+    - "@=develop"
+  dune-prototypes:
+    require:
+    - "@=develop"
+  dune-reco:
+    require:
+    - "@=develop"
+  dune-sim:
+    require:
+    - "@=develop"
+  dune-sw:
+    require:
+    - "@=develop"
+  dune-util:
+    require:
+    - "@=develop"
+  protodune-ana:
+    require:
+    - "@=develop"
+
+  # external dependencies
+  # DUNE requires this specific version. If any other experiment has a
+  # conflicting requirement, the Spack global concretization will fail.
+  # Then the LArSoft collaboration has to make a decision on how to
+  # proceed.
+  geant4:
+    require:   # Note the single colon here. Do not use a double colon.
+    - "@10.6.1"
+   

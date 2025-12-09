@@ -43,13 +43,10 @@ spack:
 #   Justin is DUNE specific but is included because its dependencies affect the LArSoft stack
       - justin
 
-
-
   specs:
     - dune-sw %build_compiler
     - $fife_specs
     - $common_dep_specs
-
 
   upstreams:
     cvmfs-larsoft:
