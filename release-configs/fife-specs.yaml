@@ -1,0 +1,15 @@
+
+definitions:
+- fife_specs:
+  - awscli
+  - data-dispatcher
+  - fife-utils
+  - hypotcode
+  - ifdhc
+  - ifdhc-config
+  - k5arc
+  - metacat
+  - poms-client
+  - poms-jobsub-wrapper
+  - rucio-clients
+  - sam-web-client

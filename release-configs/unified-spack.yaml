@@ -57,18 +57,14 @@ spack:
       - sbndcode %build_compiler
 
   specs:
-    - $specs_art
-    - $specs_nusofthep
-    - $specs_larsoft
+    - $art_specs
+    - $nusofthep_specs
+    - $larsoft_specs
     - $fife_specs
     - $dune_specs
     - $icarus_specs
     - $sbn_specs
     - $sbnd_specs
-    - py-tensorflow+cuda^cuda@12.5
-    - justin
-    - highfive
-    - py-srproxy
   concretizer:
     unify: true
     reuse:
