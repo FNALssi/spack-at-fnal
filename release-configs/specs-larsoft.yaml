@@ -1,5 +1,5 @@
 definitions:
-- specs_larsoft:
+- larsoft_specs:
   - larana %build_compiler
   - larcore %build_compiler
   - larcorealg %build_compiler
