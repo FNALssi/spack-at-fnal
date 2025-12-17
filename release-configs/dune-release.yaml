@@ -4,23 +4,17 @@ spack:
   include:
   # Toolchain defintion.
   # Defines the compiler (gcc or llvm/clang) and version.
-  - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/tags/art-3.14.04/included_yaml/gcc-12-toolchain.yaml
-    sha256: b769ddee1cff92c88b22cc968bc192a37d5fe863e6e224aeac5697a89480c5ca
+  - path: gcc-12-toolchain.yaml
 
   # Packages defintions.
   # These are version and variant requirements for a package suite
-  - path: https://raw.githubusercontent.com/LArSoft/larsoft-release-configs/refs/tags/larsoft-10.11.01/included_yaml/packages-larsoft.yaml
-    sha256: 79189dce1ceee3db1672da87b2af878c113f28f5041e7b29f4ff755d9a017f94
-  - path: https://raw.githubusercontent.com/NuSoftHEP/nusofthep-release-configs/refs/tags/nusofthep-3.17.01/included_yaml/packages-nusofthep.yaml
-    sha256: 2d8dea0b6eabcd23d54e4db44a2e20aa4a7742b06a4107bca5ca3d1bc02f29e5
-  - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/tags/art-3.14.04/included_yaml/packages-art.yaml
-    sha256: 32bfd398fcb27780263e6d593decbad885995b43852ccaf15788d82c7aed49de
-  - path: https://github.com/fnal-fife/fife-release-configs/raw/refs/tags/2.8.0.1/included_yaml/fife_packages.yaml
-    sha256: db6b29551f8a94ffab1ca7f3457ba9da47da5d4fa9b62f6ba2b81ea660118bcb
+  - path: larsoft-packages.yaml
+  - path: nusofthep-packages.yaml
+  - path: art-packages.yaml
+  - path: fife-packages.yaml
 
   # DUNE packages
-  - path: https://github.com/DUNE/dune-spack-config/blob/main/included_yaml/packages-dune.yaml
-    sha256: 234e9792af076fc87606077542f8df673f057368da9213182da1dc308bd567d7
+  - path: dune-packages.yaml
 
   # Spec definitions.
   # These are definitions of the root specs for a package suite
