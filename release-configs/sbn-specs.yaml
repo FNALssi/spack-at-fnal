@@ -1,0 +1,5 @@
+definitions:
+- sbn_specs:
+    - sbncode %build_compiler
+    - sbnanaobj
+    - sbndaq-artdaq-core

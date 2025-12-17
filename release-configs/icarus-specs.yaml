@@ -1,0 +1,7 @@
+definitions:
+- icarus_specs:
+    - icaruscode %build_compiler
+    - icarus-data
+    - icarus-signal-processing
+    - icarusalg
+    - icarusutil

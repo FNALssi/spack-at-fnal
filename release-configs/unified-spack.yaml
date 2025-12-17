@@ -24,37 +24,14 @@ spack:
 
   # Spec definitions.
   # These are definitions of the root specs for a package suite
-  - path: https://raw.githubusercontent.com/LArSoft/larsoft-release-configs/refs/tags/larsoft-10.11.01/included_yaml/specs-larsoft.yaml
-    sha256: a3d4c8646e15a02b284150fe67c9d582ef73c3c4a70f58cc17cbb40334af5752
-  - path: https://raw.githubusercontent.com/NuSoftHEP/nusofthep-release-configs/refs/tags/nusofthep-3.17.01/included_yaml/specs-nusofthep.yaml
-    sha256: d9c0e0827d133ac6e44c207352baca83bb8d601ecbed260b5980d400571a0e94
-  - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/tags/art-3.14.04/included_yaml/specs-art.yaml
-    sha256: 16e776ee6fea578385fe5ccfd67924fdb442f9219ea0cf3beaad5f6a211b7281
-  - path: https://github.com/fnal-fife/fife-release-configs/raw/refs/tags/2.8.0.1/included_yaml/fife_specs.yaml
-    sha256: 080dececfa749775969fe1f8b94ec8779c8143b5939aaf0f83390303c39ff110
-
-  # DUNE specs
-  - path: https://raw.githubusercontent.com/DUNE/dune-spack-config/refs/heads/main/included_yaml/specs-dune.yaml
-    sha256: 2b753507ddb37ae15d6b9bd2bc509c32ce21038c54703b3b53a022f01cc4ac45
-
-  definitions:
-
-# The following definitions should be defined by experiments in exp_packages.yaml and exp_specs.yaml
-# and the path:(urls) and sha256: included above.
-#
-  - icarus_specs:
-      - icaruscode %build_compiler
-      - icarus-data
-      - icarus-signal-processing
-      - icarusalg
-      - icarusutil
-  - sbn_specs:
-      - sbncode %build_compiler
-      - sbnanaobj
-      - sbndaq-artdaq-core
-      - sbnobj
-  - sbnd_specs:
-      - sbndcode %build_compiler
+  - path: art-specs.yaml
+  - path: nusofthep-specs.yaml
+  - path: larsoft-specs.yaml
+  - path: fife-specs.yaml
+  - path: dune-specs.yaml
+  - path: icarus-specs.yaml
+  - path: sbn-specs.yaml
+  - path: sbnd-specs.yaml
 
   specs:
     - $art_specs
