@@ -18,46 +18,33 @@ spack:
   - path: https://github.com/fnal-fife/fife-release-configs/raw/refs/tags/2.8.0.1/included_yaml/fife_packages.yaml
     sha256: db6b29551f8a94ffab1ca7f3457ba9da47da5d4fa9b62f6ba2b81ea660118bcb
 
-#  - DUNE example
-#  - path: https://raw.githubusercontent.com/DUNE/dune-release-configs/heads/develop/packages-dune.yaml
-#  - sha256: ... 
+  # DUNE packages
+  - path: https://github.com/DUNE/dune-spack-config/blob/main/included_yaml/packages-dune.yaml
+    sha256: 234e9792af076fc87606077542f8df673f057368da9213182da1dc308bd567d7
 
   # Spec definitions.
   # These are definitions of the root specs for a package suite
-  - path: https://raw.githubusercontent.com/LArSoft/larsoft-release-configs/refs/tags/larsoft-10.11.01/included_yaml/specs-larsoft.yaml
-    sha256: a3d4c8646e15a02b284150fe67c9d582ef73c3c4a70f58cc17cbb40334af5752
-  - path: https://raw.githubusercontent.com/NuSoftHEP/nusofthep-release-configs/refs/tags/nusofthep-3.17.01/included_yaml/specs-nusofthep.yaml
-    sha256: d9c0e0827d133ac6e44c207352baca83bb8d601ecbed260b5980d400571a0e94
-  - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/tags/art-3.14.04/included_yaml/specs-art.yaml
-    sha256: 16e776ee6fea578385fe5ccfd67924fdb442f9219ea0cf3beaad5f6a211b7281
-  - path: https://github.com/fnal-fife/fife-release-configs/raw/refs/tags/2.8.0.1/included_yaml/fife_specs.yaml
-    sha256: 080dececfa749775969fe1f8b94ec8779c8143b5939aaf0f83390303c39ff110
-
-  definitions:
-# These are common link dependencies needed by various experiment packages
-  - common_dep_specs:
-      - py-srproxy
-      - highfive
-      - hdf5@1.12.2
-# These are common runtime dependencies needed by various experiment packages
-#   Justin is DUNE specific but is included because its dependencies affect the LArSoft stack
-      - justin
+  - path: art-specs.yaml
+  - path: nusofthep-specs.yaml
+  - path: larsoft-specs.yaml
+  - path: fife-specs.yaml
+  - path: dune-specs.yaml
 
   specs:
-    - dune-sw %build_compiler
+    - $art_specs
+    - $nusofthep_specs
+    - $larsoft_specs
     - $fife_specs
-    - $common_dep_specs
-
+    - $dune_specs
   upstreams:
     cvmfs-larsoft:
       install_tree: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/opt/spack
-
   concretizer:
     unify: true
     reuse:
       from:
       - type: environment
-        path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified/
+        path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified-cuda-trimmed/
   packages:
     all:
       providers:
