@@ -1,0 +1,33 @@
+packages:
+  artdaq-core:
+    require:
+    - '@v3_11_01'
+    - ~bundle
+  cry:
+    require:
+    - '@=1.7'
+  geant4:
+    require:
+    - '@10.6.1'
+    - ~qt
+  nug4:
+    require:
+    - '@=1.16.08'
+  nugen:
+    require:
+    - '@=1.21.07'
+  nurandom:
+    require:
+    - '@=1.11.05'
+  nusimdata:
+    require:
+    - '@=1.29.00'
+  nutools:
+    require:
+    - '@=3.17.01'
+  py-torch:
+    require:
+    - '@2.7:'
+  py-tensorflow:
+    require:
+    - '@=2.17.1'

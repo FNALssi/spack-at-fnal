@@ -1,0 +1,38 @@
+packages:
+  awscli:
+    require:
+    - '@1.29.41'
+  data-dispatcher:
+    require:
+    - '@2.0.3'
+  fife-utils:
+    require:
+    - '@3.7.7'
+  hypotcode:
+    require:
+    - '@2.1'
+  ifdhc:
+    require:
+    - '@2.8.0'
+    - cxxstd=11
+  ifdhc-config:
+    require:
+    - '@2.8.0'
+  k5arc:
+    require:
+    - '@v1_4'
+  metacat:
+    require:
+    - '@4.1.3'
+  poms-client:
+    require:
+    - '@4.5.2'
+  poms-jobsub-wrapper:
+    require:
+    - '@4.5.1'
+  rucio-clients:
+    require:
+    - '@38.5.1'
+  sam-web-client:
+    require:
+    - '@3.6'

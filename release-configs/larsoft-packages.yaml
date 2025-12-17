@@ -1,0 +1,72 @@
+packages:
+  larana:
+    require:
+    - '@=10.01.00'
+  larcore:
+    require:
+    - '@=10.00.03'
+  larcorealg:
+    require:
+    - '@=10.00.03'
+  larcoreobj:
+    require:
+    - '@=10.00.00'
+  lardata:
+    require:
+    - '@=10.00.12'
+  lardataalg:
+    require:
+    - '@=10.01.03'
+  lardataobj:
+    require:
+    - '@=10.03.00'
+  lareventdisplay:
+    require:
+    - '@=10.00.27'
+  larevt:
+    require:
+    - '@=10.00.14'
+  larexamples:
+    require:
+    - '@=10.00.23'
+  larg4:
+    require:
+    - '@=10.01.00'
+  larpandora:
+    require:
+    - '@=10.01.01'
+  larpandoracontent:
+    require:
+    - '@=04.17.02'
+  larreco:
+    require:
+    - '@=10.02.07'
+  larrecodnn:
+    require:
+    - '@=10.01.22'
+  larsim:
+    require:
+    - '@=10.07.05'
+  larsimdnn:
+    require:
+    - '@=10.01.01'
+  larsimrad:
+    require:
+    - '@=10.00.23'
+  larsoft:
+    require:
+    - '@=10.11.01'
+  larwirecell:
+    require:
+    - '@=10.01.22'
+
+  # LArSoft dependencies
+  marley:
+    require:
+    - '@=1.2.1'
+  wire-cell-toolkit:
+    # Version 0.30.0 has a compilation bug in it (missing eigen header include)
+    # Also spdlog@1.15 doesn't appear to work with wire-cell-toolkit
+    require:
+    - '@=0.30.7'
+    #- '^spdlog@1.13'

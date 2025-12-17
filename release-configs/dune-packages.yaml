@@ -1,6 +1,3 @@
-# This is an example of the packages file that an experiment such as DUNE
-# would maintain to define their own release build.
-
 packages:
 
   # DUNE packages
@@ -57,9 +54,28 @@ packages:
   geant4:
     require:
     - "@10.6.1"
-
-  # FOR NEXT TIME: does this stay here, or doe it only go into dune-release.yaml,
-  # or both, or neither, or what?
+    - build_type=RelWithDebInfo
+    - generator=ninja
+    - cxxstd=17
+  grpc:
+    require:
+    - build_type=RelWithDebInfo
+    - generator=ninja
+    - cxxstd=17
+  llvm:
+    require:
+    - "@18"
+  python:
+    require:
+    - "@3.11"
+  py-tensorflow:
+    require:
+    - +cuda
+    - cuda_arch=80
+  py-torch:
+    require:
+    - +cuda
+    - cuda_arch=80
   r-m-dd-config:
     require:
     - experiment=dune
