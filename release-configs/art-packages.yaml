@@ -1,0 +1,63 @@
+packages:
+  art:
+    require:
+    - '@=3.14.04'
+  art-root-io:
+    require:
+    - '@=1.13.06'
+  canvas:
+    require:
+    - '@=3.16.04'
+  canvas-root-io:
+    require:
+    - '@=1.13.06'
+  cetlib:
+    require:
+    - '@=3.18.02'
+  cetlib-except:
+    require:
+    - '@=1.09.01'
+  cetmodules:
+    require:
+    - '@3'
+  critic:
+    require:
+    - '@=2.13.06'
+  messagefacility:
+    require:
+    - '@=2.10.05'
+  fhicl-cpp:
+    require:
+    - '@=4.18.04'
+  gallery:
+    require:
+    - '@=1.22.06'
+  ifdh-art:
+    require:
+    - '@=2.17.08'
+  hep-concurrency:
+    require:
+    - '@=1.09.02'
+
+  # art/critic dependencies
+  clhep:
+    require:
+    - '@=2.4.7.1'
+  ifbeam:
+    require:
+    - '@=2.6.3'
+  ifdhc:
+    require:
+    - '@=2.8.0'
+  ifdhc-config:
+    require:
+    - '@=2.8.0'
+  nucondb:
+    require:
+    - '@=2.6.3'
+  root:
+    require:
+    - '@=6.28.12'
+  tbb:
+    require:
+    - builtin.intel-oneapi-tbb
