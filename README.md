@@ -69,10 +69,10 @@ Note that after building the environment, you should first deactivate (`despackt
 # It will have the build, fnal_art, spack, and spack-user-cache
 # subdirectories.
 
-export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installation
+export SPACK_AT_FNAL_DIR=$PWD      # set this correctly for your own installation
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.13  # use the same as you did above
+export SPACK_PYTHON=python3.13     # use the same as you did above
 source spack/share/spack/setup-env.sh
 spacktivate docgen
 ```

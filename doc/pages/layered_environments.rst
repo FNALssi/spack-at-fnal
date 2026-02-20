@@ -24,7 +24,7 @@ To deactivate an environment, one uses the ``spack env deactivate`` command:
 
 Spack environments are fully documentted at https://spack.readthedocs.io/en/latest/environments_basics.html.
 
- 
+
 Layered Environments
 --------------------
 
@@ -32,4 +32,7 @@ A goal of CSAID is to provide reliable builds of software stacks relied upon by 
 To this end, we build and distribute consistent versions of software environments that can be shared by as many experiments as feasible.
 Because different experiments have different amounts of software in common, we have identified a set of "layers" that we will build and distribute.
 Each of these layers is realized as a Spack environment that can either be activated directly or, more commonly, be *resused* in an experiment-specific Spack environment.
+Most experimenters working with their experiment's software will only direct see the experiment-specific environment.
 
+To produce an environment that can be shared between experiments it is necessary to allow Spack to see *all* of the packages that will be used by each experiment.
+This allows Spack to concretize a consistent set of package builds that can be shared.
