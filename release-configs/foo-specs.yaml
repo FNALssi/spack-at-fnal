@@ -1,0 +1,5 @@
+definitions:
+- foo_specs:
+    - foocode %build_compiler
+    - fooanaobj
+    - foo-artdaq-core

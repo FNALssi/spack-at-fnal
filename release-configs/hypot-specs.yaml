@@ -1,0 +1,18 @@
+definitions:
+- hypot_specs:
+  - hypot-ana %build_compiler
+  - hypot-ana-obj %build_compiler
+  - hypot-calib %build_compiler
+  - hypot-core %build_compiler
+  - hypot-daq-data-formats %build_compiler
+  - hypot-data-prep %build_compiler
+  - hypot-det-data-formats %build_compiler
+  - hypot-examples %build_compiler
+  - hypot-op-det %build_compiler
+  - hypot-pd-legacy %build_compiler
+  - hypot-prototypes %build_compiler
+  - hypot-reco %build_compiler
+  - hypot-sim %build_compiler
+  - hypot-sw %build_compiler
+  - hypot-util %build_compiler
+  - protohypot-ana %build_compiler

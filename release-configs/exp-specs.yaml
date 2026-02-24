@@ -1,0 +1,7 @@
+definitions:
+- exp_specs:
+    - expcode %build_compiler
+    - exp-data
+    - exp-signal-processing
+    - expalg
+    - exputil

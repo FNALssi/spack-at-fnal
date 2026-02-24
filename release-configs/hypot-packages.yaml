@@ -1,52 +1,52 @@
 packages:
 
-  # DUNE packages
-  dune-ana:
+  # HYPOT packages
+  hypot-ana:
     require:
     - "@=10.11.01d00"
-  dune-ana-obj:
+  hypot-ana-obj:
     require:
     - "@=03.11.00"
-  dune-calib:
+  hypot-calib:
     require:
     - "@=10.11.01d00"
-  dune-core:
+  hypot-core:
     require:
     - "@=10.11.01d00"
-  dune-daq-data-formats:
+  hypot-daq-data-formats:
     require:
     - "@=4.4.5"
-  dune-data-prep:
+  hypot-data-prep:
     require:
     - "@=10.11.01d00"
-  dune-det-data-formats:
+  hypot-det-data-formats:
     require:
     - "@=4.4.5"
-  dune-examples:
+  hypot-examples:
     require:
     - "@=10.11.01d00"
-  dune-op-det:
+  hypot-op-det:
     require:
     - "@=10.11.01d00"
-  dune-pd-legacy:
+  hypot-pd-legacy:
     require:
     - "@=1.01.05"
-  dune-prototypes:
+  hypot-prototypes:
     require:
     - "@=10.11.01d00"
-  dune-reco:
+  hypot-reco:
     require:
     - "@=10.11.01d00"
-  dune-sim:
+  hypot-sim:
     require:
     - "@=10.11.01d00"
-  dune-sw:
+  hypot-sw:
     require:
     - "@=10.11.01d00"
-  dune-util:
+  hypot-util:
     require:
     - "@=10.11.01d00"
-  protodune-ana:
+  protohypot-ana:
     require:
     - "@=10.11.01d00"
 
@@ -78,4 +78,4 @@ packages:
     - cuda_arch=80
   r-m-dd-config:
     require:
-    - experiment=dune
+    - experiment=hypot

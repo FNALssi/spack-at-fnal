@@ -13,8 +13,8 @@ spack:
   - path: art-packages.yaml
   - path: fife-packages.yaml
 
-  # DUNE packages
-  - path: dune-packages.yaml
+  # hypot packages
+  - path: hypot-packages.yaml
 
   # Spec definitions.
   # These are definitions of the root specs for a package suite
@@ -22,14 +22,14 @@ spack:
   - path: nusofthep-specs.yaml
   - path: larsoft-specs.yaml
   - path: fife-specs.yaml
-  - path: dune-specs.yaml
+  - path: hypot-specs.yaml
 
   specs:
     - $art_specs
     - $nusofthep_specs
     - $larsoft_specs
     - $fife_specs
-    - $dune_specs
+    - $hypot_specs
   upstreams:
     cvmfs-larsoft:
       install_tree: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/opt/spack

@@ -4,6 +4,7 @@ spack:
   include:
   # Toolchain defintion.
   # Defines the compiler (gcc or llvm/clang) and version.
+  # Sets the %build_compiler toolchain variable name.
   - path: gcc-12-toolchain.yaml
 
   # Packages defintions.
@@ -13,8 +14,17 @@ spack:
   - path: art-packages.yaml
   - path: fife-packages.yaml
 
-  # DUNE packages
-  - path: dune-packages.yaml
+# These are included to gather the package dependencies for the HYPOT, FOO, BAR, and EXP packages. 
+# They are not expected to be complete, but they are expected to be sufficient to concretize 
+# the root specs defined in the corresponding *-specs.yaml files.
+  # HYPOT packages
+  - path: hypot-develop-packages.yaml
+  # FOO packages
+  - path: foo-develop-packages.yaml
+  # BAR packages
+  - path: bar-develop-packages.yaml
+  # EXP packages
+  - path: exp-develop-packages.yaml
 
   # Spec definitions.
   # These are definitions of the root specs for a package suite
@@ -22,20 +32,21 @@ spack:
   - path: nusofthep-specs.yaml
   - path: larsoft-specs.yaml
   - path: fife-specs.yaml
-  - path: dune-specs.yaml
-  - path: icarus-specs.yaml
-  - path: sbn-specs.yaml
-  - path: sbnd-specs.yaml
+  - path: hypot-specs.yaml
+  - path: exp-specs.yaml
+  - path: foo-specs.yaml
+  - path: bar-specs.yaml
 
   specs:
     - $art_specs
     - $nusofthep_specs
     - $larsoft_specs
     - $fife_specs
-    - $dune_specs
-    - $icarus_specs
-    - $sbn_specs
-    - $sbnd_specs
+    - $hypot_specs
+    - $exp_specs
+    - $foo_specs
+    - $bar_specs
+
   concretizer:
     unify: true
     reuse:

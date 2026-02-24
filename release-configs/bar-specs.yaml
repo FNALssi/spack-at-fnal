@@ -1,0 +1,3 @@
+definitions:
+- bar_specs:
+    - barcode %build_compiler
