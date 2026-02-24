@@ -67,7 +67,7 @@ project_variable(SPHINX_DOC_EXTRA_ARGS TYPE STRING
 set(PROJ_AUTHORS "scisoft-team <scisoft-team@fnal.gov>")
 set(PROJ_NAME "${PROJECT_NAME}")
 set(PROJ_COPYRIGHT_START 2024)
-set(PROJ_COPYRIGHT_OWNER "Fermi Research Alliance, LLC")
+set(PROJ_COPYRIGHT_OWNER "Fermi Forward Discovery Group, LLC")
 
 _set_version_release()
 
