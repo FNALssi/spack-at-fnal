@@ -167,7 +167,7 @@ Experiment Build Recipe Repository
 ----------------------------------
 
 The experiment should have a Spack build recipe repository, with the build/install recipes for the experiment packages, and any third-party packages used by only this experiment, and not available in the main Spack builtin repository.
-Spack `documents <https://spack.readthedocs.io/en/latest/repositories.html>`__ the recipe repository structure in some detail, as well as the recipe creation `process <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html>`__ and we have some Fermi specific `recomendations <https://github.com/FNALssi/fermi-spack-tools/wiki/Spack-recipe-guidance-for-CMake-packages>`__
+Spack `documents <https://spack.readthedocs.io/en/latest/repositories.html>`__ the recipe repository structure in some detail, as well as the recipe creation `process <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html>`__ and we have some Fermi specific `recommendations <https://github.com/FNALssi/fermi-spack-tools/wiki/Spack-recipe-guidance-for-CMake-packages>`__
 for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
 
 Build process
@@ -218,6 +218,16 @@ If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack
 
 where you give a path to where you want the spack instance to appear.
 
+You then want to make sure to install the compilers you want into your standalone instance. 
+Unless you ahve a lot of time to kill, you probalby want to install one that is already built.
+
+.. code-block:: shell
+
+  source /path/to/location/setup-env.sh
+  spack buildcache list -al gcc llvm
+  spack install --cache-only gcc@1.2.3
+
+
 Creating a "subspack" instance
 ------------------------------
 
@@ -227,6 +237,8 @@ If you have access to one of our existing cvmfs Spack instances that is running 
 
    source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
    spack subspack --with-padding /path/to/location
+
+In this subspack, you will already have access to the compilers that are available in the upstream instance.
 
 Setting up the Spack instance
 -----------------------------
