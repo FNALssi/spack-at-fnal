@@ -167,7 +167,7 @@ Experiment Build Recipe Repository
 ----------------------------------
 
 The experiment should have a Spack build recipe repository, with the build/install recipes for the experiment packages, and any third-party packages used by only this experiment, and not available in the main Spack builtin repository.
-Spack [documents](https://spack.readthedocs.io/en/latest/repositories.html#structure-of-an-individual-package-repository) the recipe repository structure in some detail, as well as the recipe creation [process](https://spack.readthedocs.io/en/latest/packaging_guide_creation.html), and we have some Fermi specific [recommendations]() for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
+Spack `documents<https://spack.readthedocs.io/en/latest/repositories.html#structure-of-an-individual-package-repository>`_ the recipe repository structure in some detail, as well as the recipe creation `process<https://spack.readthedocs.io/en/latest/packaging_guide_creation.html>`_, and we have some Fermi specific [recommendations]() for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
 
 Build process
 =============
