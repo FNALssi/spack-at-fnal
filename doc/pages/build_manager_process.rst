@@ -81,8 +81,9 @@ These YAML[2]_ files will contain a "packages" dictionary mapping package names 
 Note that this file may add requirements to non-experiment packages (i.e. boost and art, above), if they are required for the experiment software. 
 Version restrictions (like the above example for "art") should really be included in the dependency definitions in the appropriate package's recipe file; but can be included here if needed.
 
-..[1] https://spack.readthedocs.io/en/latest/environments_basics.html
-..[2] https://en.wikipedia.org/wiki/YAML
+.. [1] https://spack.readthedocs.io/en/latest/environments_basics.html
+
+.. [2] https://en.wikipedia.org/wiki/YAML
 
 The Build config file
 ---------------------
