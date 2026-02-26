@@ -171,7 +171,9 @@ Spack documents_
 .. _python: https://spack.readthedocs.io/en/latest/repositories.html#structure-of-an-individual-package-repository_ 
 the recipe repository structure in some detail, as well as the recipe creation _process,
 .. _process: https://spack.readthedocs.io/en/latest/packaging_guide_creation.html 
-and we have some Fermi specific [recommendations]() for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
+and we have some Fermi specific _recommendations
+.. _reccomendations: https://github.com/FNALssi/fermi-spack-tools/wiki/Spack-recipe-guidance-for-CMake-packages
+for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
 
 Build process
 =============
