@@ -200,3 +200,82 @@ which we will discuss below; in either case we want to configure such an instanc
 * is configured with Spack path-padding so binary packages are redistribable
 * knows about appropriate compilers
 * has signing keys installed for signing binary packages for distribution
+
+A "subspack" / chained instance will generally take less disk space and setup faster than a standalone instance, but if you don't have access to an existing intance to base it from, or you want to be insulated from the compilers available, existing packages, etc. in the existing instance, you may find a standalone instance is your choice.
+
+
+Creating a Standalone instance
+------------------------------
+
+At Fermilab, we recommend using our "bootstrap" script from our fermi-spack-tools package.
+If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack-tools/wiki#getting-started>`_ you will find links to download the latest bootstrap script, which you can copy the link for in your browser and paste into a terminal to get the latest version, and use like this:
+
+.. code-block:: shell
+
+  $ wget https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.1.1/bin/bootstrap
+  $ sh ./bootstrap --with_padding /path/to/location
+
+where you give a path to where you want the spack instance to appear.
+
+Creating a "subspack" instance
+------------------------------
+
+If you have access to one of our existing cvmfs Spack instances that is running Spack 1.0 or later, you can use our "spack subspack" extension to make a chained spack instance which shares the existing instance's packages, but lets you install new things into the local, writable one.
+
+.. code-block:: shell
+
+   source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
+   spack subspack --with-padding /path/to/location
+
+Setting up the Spack instance
+-----------------------------
+
+Both of the above will give you a writable Spack instance at /path/to/location with our standard Fermi path padding turned on, for building redistributable binary packages.
+Having created the instance, you need to set it up, and then we can create the build environment
+
+.. code-block:: shell
+
+  source /path/to/location/setup-env.sh
+  spack env create build_hypotcode_vx_y
+
+Getting Ready for a test build
+------------------------------
+
+We can now populate our build environment with the spack.yaml file for our build, and concretize it and install.  In a perfect world, this looks like:
+  
+.. code-block:: shell
+
+  spack env activate build_hypotcode_vx_y
+  spack cd --env
+  wget https://github.com/hypot/hypot-release-configs/blob/main/hypot-release.yaml
+  mv hypot-release.yaml spack.yaml
+  spack concretize | tee conc.out
+  spack install
+
+However, we wish instead to customize the spack.yaml file, and possibly several of the included files, to be ready for the next release.  
+Most frequently, this involves customizing the hypot_packages.yaml file that the release file gets from the repository.   
+To avoid repeated updates of the config file and checksums to test a new version number, etc. you want to download that file from Git as well, and change your spack.yaml file to use the local copy. 
+
+.. code-block:: shell
+
+  wget https://github.com/hypot/hypot-release-configs/blob/main/included_yaml/hypot-packages.yaml
+
+Then you want to edit the spack.yaml file and change it to use the local file instead; this changes the entry under include: to look like:
+
+.. code-block:: yaml
+
+  include:
+
+    # Toolchain
+    - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/heads/main/included_yaml/gcc-12-toolchain.yaml
+      sha256: b769ddee1cff92c88b22cc968bc192a37d5fe863e6e224aeac5697a89480c5ca
+
+    # hypot
+    #- path: https://raw.githubusercontent.com/hypot/hypot-release-configs/refs/heads/main/included_yaml/hypot-packages.yaml
+    #  sha256: f36085e9de736feb765305bebc170593d767a046c94b5489f4ca0082ab4d6754
+    - ./hypot-packages.yaml
+
+You see above, we huave commented out both the URL path and the sha256 checksum line, and just put the local filename in its place.   
+Now we can update version numbers, add/remove required variants, etc. to assist in getting the build we want, without a lot of git commit/push operations and sha256 hash updates.
+
+
