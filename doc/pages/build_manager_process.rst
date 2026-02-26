@@ -22,7 +22,7 @@ More details on these below:
 Build environment config files
 ------------------------------
 
-Both the reference builds, and the various experiment frameworks, should be built in Spack build environments[1]_, which will have config files ("spack.yaml") which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizaitions whose software is being included. 
+Both the reference builds, and the various experiment frameworks, should be built in Spack build environments [1]_, which will have config files ("spack.yaml") which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizaitions whose software is being included. 
 In particular we expect each experiment to have, under version control, a build config repository of at least 3 files:
 
 * A file defining lists of specs "hypot_specs.yaml"
@@ -41,7 +41,7 @@ We will now discuss the format and usage of these various files in more detail.
 Specs files hypot_specs.yaml
 ----------------------------
 
-These files will be YAML[2]_ files whose contents will be a "definitions" dictionary defining a list of specs, usually just as package names, for example:
+These files will be YAML [2]_ files whose contents will be a "definitions" dictionary defining a list of specs, usually just as package names, for example:
 
 .. code-block:: yaml
 
@@ -57,7 +57,7 @@ This definition list will be used in the experiment build configuration file, bu
 Packages files hypot_packages.yaml
 ----------------------------------
 
-These YAML[2]_ files will contain a "packages" dictionary mapping package names to requirements lists, for example:
+These YAML [2]_ files will contain a "packages" dictionary mapping package names to requirements lists, for example:
 
 .. code-block:: yaml
 
