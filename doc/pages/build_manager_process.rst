@@ -209,7 +209,7 @@ Creating a Standalone instance
 ------------------------------
 
 At Fermilab, we recommend using our "bootstrap" script from our fermi-spack-tools package.
-If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack-tools/wiki#getting-started>`_ you will find links to download the latest bootstrap script, which you can copy the link for in your browser and paste into a terminal to get the latest version, and use like this:
+If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack-tools/wiki#getting-started>`__ you will find links to download the latest bootstrap script, which you can copy the link for in your browser and paste into a terminal to get the latest version, and use like this:
 
 .. code-block:: shell
 
