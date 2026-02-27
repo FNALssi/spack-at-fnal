@@ -133,15 +133,12 @@ This will be an Spack environment "spack.yaml" file, with includes of the variou
     upstreams:
       cvmfs-larsoft:
         install_tree: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/opt/spack
-
-
     specs:
       - $specs_art
       - $specs_nusofthep
       - $specs_larsoft
       - $fife_specs
       - $specs_dune
-
     concretizer:
       unify: true
       reuse:
@@ -162,7 +159,7 @@ This will be an Spack environment "spack.yaml" file, with includes of the variou
         target:
         - x86_64_v3
 
-This file includes the various organizations' specs and packages files, and combines the various definitions from the specs files into "spec:" list for this build.  It also sets concretizer and upstreams values to reuse the packages from the CVMFS Larsoft area in the build.  Note that the includes all include the SHA256 hashes of the included files, to be sure we're using the expected versions.`
+This file includes the various organizations' specs and packages files, and combines the various definitions from the specs files into the "spec:" list for this build.  It also sets concretizer and upstreams values to reuse the packages from the CVMFS Larsoft area in the build.  Note that the includes all include the SHA256 hashes of the included files, to be sure we're using the expected versions.
 
 Experiment Build Recipe Repository
 ----------------------------------
@@ -220,7 +217,7 @@ If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack
 where you give a path to where you want the spack instance to appear.
 
 You then want to make sure to install the compilers you want into your standalone instance. 
-Unless you ahve a lot of time to kill, you probalby want to install one that is already built.
+Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the build cache.
 
 .. code-block:: shell
 
@@ -239,7 +236,7 @@ If you have access to one of our existing cvmfs Spack instances that is running 
    source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
    spack subspack --with-padding /path/to/location
 
-In this subspack, you will already have access to the compilers that are available in the upstream instance.
+In this subspack, you will already have access to the compilers that are available in the upstream instance, so you'll only need to install a compiler if you want to use one that isn't already in that upstream instance.
 
 Setting up the Spack instance
 -----------------------------
@@ -252,8 +249,8 @@ Having created the instance, you need to set it up, and then we can create the b
   source /path/to/location/setup-env.sh
   spack env create build_hypotcode_vx_y
 
-Getting Ready for a test build
-------------------------------
+Getting Ready for a build
+-------------------------
 
 We can now populate our build environment with the spack.yaml file for our build, and concretize it and install.  In a perfect world, this looks like:
   
@@ -266,7 +263,7 @@ We can now populate our build environment with the spack.yaml file for our build
   spack concretize | tee conc.out
   spack install
 
-However, we wish instead to customize the spack.yaml file, and possibly several of the included files, to be ready for the next release.  
+However, we probalby wish instead to customize the spack.yaml file, and possibly several of the included files, to be ready for the next release.  
 Most frequently, this involves customizing the hypot_packages.yaml file that the release file gets from the repository.   
 To avoid repeated updates of the config file and checksums to test a new version number, etc. you want to download that file from Git as well, and change your spack.yaml file to use the local copy. 
 
@@ -291,5 +288,99 @@ Then you want to edit the spack.yaml file and change it to use the local file in
 
 You see above, we huave commented out both the URL path and the sha256 checksum line, and just put the local filename in its place.   
 Now we can update version numbers, add/remove required variants, etc. to assist in getting the build we want, without a lot of git commit/push operations and sha256 hash updates.
+
+Once we have a version of the hypot_packages.yaml file we like, we can commit itto our config repository, compute the new sha256 sum for it, commit the spack.yaml file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
+
+Adding built packages to a buildcache
+=====================================
+
+Once you have packages built, you can make signed buildcache images, and upload them to the appropriate buildcache. 
+First you will need a GnuPG signing key installed in your spack instance, if you don't have one already.
+
+Installing a signing key
+------------------------
+
+If this is a new Spack build instance, you likely do not have any signing keys installed in it to sign your packages.  
+If your experiment has a pgp key or key(s) for signing official binaries already, you can add it; if you don't have one you can create one.
+
+.. code-block:: shell
+
+  # making a new key
+  spack gpg create --comment "HYPOT official package signing key" hypotpro hypotpro@fnal.gov
+  spack export public-key-file hypotpro@fnal.gov
+  spack export --secret secret-key-file hypotpro@fnal.gov
+  scp secret-key-file public-key-file somehost:/some/place/safe
+  rm secret-key-file public-key-file
+
+  # adding an existing key
+  scp somehost:/some/place/safe/*-key-file .
+  spack gpg trust public-key-file
+  spack gpg trust secret-key-file
+  rm secret-key-file public-key-file
+
+where the somehost:/some/place/safe should be somwhere like /opt/hypotpro on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
+
+Or you may want to use a signing key specific to yourself, personally, and keep it wherever you keep such things.
+
+Packing up your build for distribution
+======================================
+
+Now you can activate your spack build environment, and make signed buildcache images for the new build:
+
+.. code-block:: shell
+
+  spack env activate build_hypotcode_vx_y
+  spack cd --env
+  spack localbuildcache --key hypotcode@fnal.gov --local --not-bc --with-build-dependencies
+
+This will 
+
+* create a buildcache in the "bc" subdirectory
+* sign the binaries with your hypotcode@fnal.gov GnuPG key
+* only include packages from the local spack instance
+* omit packages installed from a buildcache 
+* include build dependencies, not just runtime ones
+
+Moving the buildcache images to SciSoft
+=======================================
+
+Now (assuming you have suitable permissions) you can upload the buildcache files to SciSoft or spack-cache-1 and update the buildcache index.  
+
+
+.. code-block:: shell
+
+  spack env activate build_hypotcode_vx_y
+  spack cd --env
+  scp -r bc/* scisoftbuild02.fnal.gov:/SciSoft/spack-mirror/spack-binary-cache-v3
+  ssh scisoftbuild02.fnal.gov <<EOF
+   source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
+   spack buildcache update-index /SciSoft/spack-mirror/spack-binary-cache-v3
+  EOF
+
+Installing the built packges in /cvmfs
+======================================
+
+Now if you have a spack instance in /cvmfs, you can install these new packages into /cvmfs.  
+(This assumes you have permissions to use the cvmfshypot@oasiscfs.fnal.gov account to update cvmfs)
+The most effective way is to 
+* start a cvmfs transaction
+* recreate the environment from the spack.lock file from your build
+* use spack install --cache-only to populate it
+* publish the cvmfs transaction
+This looks like:
+
+.. code-block:: shell
+
+  spack env activate build_hypotcode_vx_y
+  spack cd --env
+  scp spack.lock  cvmfshypot@oasiscfs.fnal.gov:/tmp/hypotcode_vx_y.lock
+  ssh cvmfshypot@oasiscfs.fnal.gov
+
+  cvmfs_server transaction hypot.opensciencegrid.org
+  source /cvmfs/hypot.opensciencegrid.org/spack-dir/setup-env.sh
+  spack env create build_hypotcode_vx_y /tmp/hypotcode_vx_y.lock
+  spack env activate build_hypotcode_vx_y
+  spack install --cache-only
+  cd ; cvmfs_server publish hypot.opensciencegrid.org
 
 
