@@ -373,14 +373,45 @@ This looks like:
 
   spack env activate build_hypotcode_vx_y
   spack cd --env
-  scp spack.lock  cvmfshypot@oasiscfs.fnal.gov:/tmp/hypotcode_vx_y.lock
+  scp spack.lock cvmfshypot@oasiscfs.fnal.gov:/tmp/hypotcode_vx_y.lock
   ssh cvmfshypot@oasiscfs.fnal.gov
 
   cvmfs_server transaction hypot.opensciencegrid.org
   source /cvmfs/hypot.opensciencegrid.org/spack-dir/setup-env.sh
   spack env create build_hypotcode_vx_y /tmp/hypotcode_vx_y.lock
   spack env activate build_hypotcode_vx_y
-  spack install --cache-only
+  spack install --cache-only --include-build-deps
+
   cd ; cvmfs_server publish hypot.opensciencegrid.org
 
+Useful spack install options
+----------------------------
 
+In our above examples, we have generally just done a ``spack concretize`` and a ``spack install`` but there are numerous `options <https://spack.readthedocs.io/en/latest/command_index.html#spack-install>` to ``spack install`` which can be useful, including:
+
+``--source``
+    install source files as well as package
+``--add``
+    add the given spec to the current environment, concretize, and install
+``--test {root,all}``
+    run recipe defined tests on either the root package(s) only, or all installed packages
+``--force``
+    Re-concretize before installing.  Useful if you have changed a package requirement, etc. 
+
+
+Automating builds with FNAL Jenkins and build-spack-env.sh
+==========================================================
+
+[DRAFT section, may not be included] 
+
+The `fermi-spack-tools <https://github.com/FNALssi/fermi-spack-tools>` package has a ``build-spack-env.sh`` script that is very useful for doing automated Spack builds on our site Jenkins infrastructure -- it runs through pretty much the entire process described in this document of 
+
+* setting up a spack instance, 
+* fetchin an environment spack.yaml file from a given URL
+* installing neccesary compilers
+* creating an environment from the downloded spack.yaml
+* concretizing it
+* doing the spack install (with optional --test arguments)
+* creating the buildcache images of the build as Jenkins artifacts
+
+If you have gotten a Jenkins account (link needed), and have VPN, you can examine the project here (link needed) for an example of using this script. 
