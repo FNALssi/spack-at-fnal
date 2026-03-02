@@ -387,7 +387,7 @@ This looks like:
 Useful spack install options
 ----------------------------
 
-In our above examples, we have generally just done a ``spack concretize`` and a ``spack install`` but there are numerous `options <https://spack.readthedocs.io/en/latest/command_index.html#spack-install>` to ``spack install`` which can be useful, including:
+In our above examples, we have generally just done a ``spack concretize`` and a ``spack install`` but there are numerous `options <https://spack.readthedocs.io/en/latest/command_index.html#spack-install>`__ to ``spack install`` which can be useful, including:
 
 ``--source``
     install source files as well as package
