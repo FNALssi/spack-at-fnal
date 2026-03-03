@@ -1,47 +1,49 @@
-
+===========================================================================
 Build Manager Processes for Experiment software using CSAID Shared Software
 ===========================================================================
 
-The Fermilab CSAID division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager,  which are used to build experiment software frameworks, etc.
+The Fermilab CSAID directorate develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
+These packages are used to build experiment software stacks.
 To allow a single reference build of those software packages to work for our various experiment customers, we request they follow the following procedures when building and distributing their software.
+
 This document will discuss the files that the experiment needs to maintain to facilitate these shared Spack builds as well as experiment software releases, as well as how to distribute the packages thus built to CVMFS.
-For purposes of illustration, this document will refer to the Hypothetical Experiment "hypot": filenames, etc. using the string "hypot" would, for any particular experiment, use their own experiment name in place of "hypot".
+For purposes of illustration, this document will refer to the Hypothetical Experiment **hypot**: filenames, etc. using the string **hypot** would, for any particular experiment, use their own experiment name in place of **hypot**.
 
-
-Maintaining build environment config files and build recipes
-============================================================
+Maintaining build environment configuration files and build recipes
+===================================================================
 
 This will involve (at least) 2 Git repositories (besides the repositories for the experiment code packages themselves)
 
-* one for Spack build recipes and 
-* one for Spack build environment config files and fragments
+* one for Spack build recipes, and 
+* one for Spack build environment configuration files and fragments.
 
-These two repositories for each experiment, properly configured, will allow CSAID to build releases of shared packages that can be reused by all the various groups, by combining them all into a "global solve".
-More details on these below:
+These two repositories for each experiment, properly configured, will allow CSAID to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
+This *global solve* is the mechanism by which Spack can ensure that we produce a single consistent set of packages that will work together and which satisfy the set of constraints imposed by the recipes of all the different participating experiments.
 
-Build environment config files
-------------------------------
+Build environment configuration files
+-------------------------------------
 
-Both the reference builds, and the various experiment frameworks, should be built in Spack build environments [1]_, which will have config files ("spack.yaml") which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizaitions whose software is being included. 
-In particular we expect each experiment to have, under version control, a build config repository of at least 3 files:
+The reference builds and the various experiment software stacks should be built in Spack build environments [1]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
+In particular we expect each experiment to have, under version control, a build configuration repository of at least 3 files:
 
-* A file defining lists of specs "hypot_specs.yaml"
-* A file listing package version and variant requirements, "hypot_packages.yaml"
-* An actual build configuration file which includes the above, along with including similar files for the larsoft and fife projects, etc. needed.
+* A file defining lists of specs `hypot_specs.yaml`
+* A file listing package version and variant requirements, `hypot_packages.yaml`
+* An actual build configuration file which includes the above, along with including similar files for the **larsoft** and **fife** projects, etc., needed.
 
 These files should be under version control in order to provide different branched versions of those files for different purposes, to be explained in more detail below.
 
 The files above for a particular experiment should be in a repository controlled by that experiment.
-Similarly there will be build configuration files for the various CSAID projects, like "larsoft", "phlex", "art", "fife", etc.
+Similarly there will be build configuration files for the various CSAID projects, like **larsoft**, **phlex**, **art**, **fife**, etc.
 
-These config repositories should have branches with variants of the above files, allowing checking out a version of the above files which use "@develop" (or similar tags) for the version, (((((((((for building CI test builds, etc.), as well as tagged versions for their various software releases.
+These configuration repositories should have branches with variants of the above files, allowing checking out a version of the above files which use `@develop` (or similar tags) for the version, (or building CI test builds, etc.), as well as tagged versions for their various software releases.
 
 We will now discuss the format and usage of these various files in more detail.
 
-Specs files hypot_specs.yaml
-----------------------------
+Specs files `hypot_specs.yaml`
+------------------------------
 
-These files will be YAML [2]_ files whose contents will be a "definitions" dictionary defining a list of specs, usually just as package names, for example:
+These files will be YAML [2]_ files whose contents will be a dictionary named *definitions*, defining a list of *specs*.
+These are usually just as package names, for example:
 
 .. code-block:: yaml
 
@@ -52,12 +54,12 @@ These files will be YAML [2]_ files whose contents will be a "definitions" dicti
     - hypotutils
     ...
 
-This definition list will be used in the experiment build configuration file, but also by the CSAID teams building the share packages in a "global solve". 
+This definition list will be used in the experiment build configuration file, but also by the CSAID teams building the share packages in a *global solve*. 
 
-Packages files hypot_packages.yaml
-----------------------------------
+Packages files `hypot_packages.yaml`
+------------------------------------
 
-These YAML [2]_ files will contain a "packages" dictionary mapping package names to requirements lists, for example:
+These YAML [2]_ files will contain a dictionary named *packages*, mapping package names to requirements lists, for example:
 
 .. code-block:: yaml
 
@@ -78,17 +80,17 @@ These YAML [2]_ files will contain a "packages" dictionary mapping package names
     require:
     - '+iostreams+json'
 
-Note that this file may add requirements to non-experiment packages (i.e. boost and art, above), if they are required for the experiment software. 
-Version restrictions (like the above example for "art") should really be included in the dependency definitions in the appropriate package's recipe file; but can be included here if needed.
+Note that this file may add requirements to non-experiment packages (i.e. **boost** and **art**, above), if they are required for the experiment software. 
+Version restrictions (like the above example for **art**) should really be included in the dependency definitions in the appropriate package's recipe file; but can be included here if needed.
 
 .. [1] https://spack.readthedocs.io/en/latest/environments_basics.html
 
 .. [2] https://en.wikipedia.org/wiki/YAML
 
-The Build config file
----------------------
+The Build configuration file
+----------------------------
 
-This will be an Spack environment "spack.yaml" file, with includes of the various fragments, above, and combines the various definitions from those files.  For example:
+This will be an Spack environment `spack.yaml` file, with includes of the various fragments, above, and combines the various definitions from those files.  For example:
 
 .. code-block:: yaml
 
@@ -96,12 +98,12 @@ This will be an Spack environment "spack.yaml" file, with includes of the variou
     config:
       deprecated: true
     include:
-    # Toolchain defintion.
+    # Toolchain definition.
     # Defines the compiler (gcc or llvm/clang) and version.
     - path: https://raw.githubusercontent.com/art-framework-suite/art-release-configs/refs/tags/art-3.14.04/included_yaml/gcc-12-toolchain.yaml
       sha256: b769ddee1cff92c88b22cc968bc192a37d5fe863e6e224aeac5697a89480c5ca
 
-    # Packages defintions.
+    # Packages definitions.
     # Hypot packages
     - path: https://raw.githubusercontent.com/Hypot/hypot-release-configs/b5d45909e3c3e2efb9930798df4ba2363986f42b/included_yaml/hypot-packages.yaml
       sha256: f36085e9de736feb765305bebc170593d767a046c94b5489f4ca0082ab4d6754
@@ -159,7 +161,9 @@ This will be an Spack environment "spack.yaml" file, with includes of the variou
         target:
         - x86_64_v3
 
-This file includes the various organizations' specs and packages files, and combines the various definitions from the specs files into the "spec:" list for this build.  It also sets concretizer and upstreams values to reuse the packages from the CVMFS Larsoft area in the build.  Note that the includes all include the SHA256 hashes of the included files, to be sure we're using the expected versions.
+This file includes the various organizations' specs and packages files, and combines the various definitions from the specs files into the `spec:` list for this build.
+It also sets concretizer and upstreams values to reuse the packages from the CVMFS Larsoft area in the build.
+Note that the includes all include the SHA256 hashes of the included files, to be sure we're using the expected versions.
 
 Experiment Build Recipe Repository
 ----------------------------------
@@ -175,12 +179,12 @@ With some version of the above files and repositories available, building a vers
 
 * preparing a Spack build instance if you don't have one
 * creating a build environment for this release
-* updating a hypot_package.yaml  with suitable version information
-* putting the Build config / spack.yaml file in the environment
-* doing a spack concretize and spack install to do a test build of the software
-* committing and tagging the versions of the hypot_package.yaml and build config spack.yaml files used in the build 
+* updating a `hypot_package.yaml`  with suitable version information
+* putting the Build config / `spack.yaml` file in the environment
+* doing a `spack concretize` and `spack install` to do a test build of the software
+* committing and tagging the versions of the `hypot_package.yaml` and build config `spack.yaml` files used in the build 
 * doing an actual release build, using the checksummed, tagged, version of the files from the from the experiment config repository.
-* making a buildcache of the built binary packages
+* making a *buildcache* of the built binary packages
 * installing the buildacache images into CVMFS package areas.
 
 We will now discuss these steps in more detail.
@@ -191,7 +195,7 @@ Preparing a Spack build instance
 There are two approaches to setting up a Spack build instance:
 
 * a standalone instance or
-* a "subspack" chained instance
+* a *subspack* chained instance
 
 which we will discuss below; in either case we want to configure such an instance which:
 
@@ -200,13 +204,14 @@ which we will discuss below; in either case we want to configure such an instanc
 * knows about appropriate compilers
 * has signing keys installed for signing binary packages for distribution
 
-A "subspack" / chained instance will generally take less disk space and setup faster than a standalone instance, but if you don't have access to an existing intance to base it from, or you want to be insulated from the compilers available, existing packages, etc. in the existing instance, you may find a standalone instance is your choice.
+A *subspack* / chained instance will generally take less disk space and setup faster than a standalone instance.
+However, if you don't have access to an existing intance to base it from, or you want to be insulated from the compilers available, existing packages, etc., in the existing instance, you may find a standalone instance preferable.
 
 
 Creating a Standalone instance
 ------------------------------
 
-At Fermilab, we recommend using our "bootstrap" script from our fermi-spack-tools package.
+At Fermilab, we recommend using our `bootstrap` script from our fermi-spack-tools package.
 If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack-tools/wiki#getting-started>`__ you will find links to download the latest bootstrap script, which you can copy the link for in your browser and paste into a terminal to get the latest version, and use like this:
 
 .. code-block:: shell
@@ -226,10 +231,10 @@ Unless you ahve a lot of time to kill, you probalby want to install one that is 
   spack install --cache-only gcc@1.2.3
 
 
-Creating a "subspack" instance
-------------------------------
+Creating a subspack instance
+----------------------------
 
-If you have access to one of our existing cvmfs Spack instances that is running Spack 1.0 or later, you can use our "spack subspack" extension to make a chained spack instance which shares the existing instance's packages, but lets you install new things into the local, writable one.
+If you have access to one of our existing cvmfs Spack instances that is running Spack 1.0 or later, you can use our `spack subspack` extension to make a chained spack instance which shares the existing instance's packages, but lets you install new things into the local, writable one.
 
 .. code-block:: shell
 
@@ -241,7 +246,7 @@ In this subspack, you will already have access to the compilers that are availab
 Setting up the Spack instance
 -----------------------------
 
-Both of the above will give you a writable Spack instance at /path/to/location with our standard Fermi path padding turned on, for building redistributable binary packages.
+Both of the above will give you a writable Spack instance at `/path/to/location`` with our standard Fermi path padding turned on, for building redistributable binary packages.
 Having created the instance, you need to set it up, and then we can create the build environment
 
 .. code-block:: shell
@@ -252,7 +257,8 @@ Having created the instance, you need to set it up, and then we can create the b
 Getting Ready for a build
 -------------------------
 
-We can now populate our build environment with the spack.yaml file for our build, and concretize it and install.  In a perfect world, this looks like:
+We can now populate our build environment with the `spack.yaml` file for our build, and concretize it and install.
+In a perfect world, this looks like:
   
 .. code-block:: shell
 
@@ -263,15 +269,15 @@ We can now populate our build environment with the spack.yaml file for our build
   spack concretize | tee conc.out
   spack install
 
-However, we probalby wish instead to customize the spack.yaml file, and possibly several of the included files, to be ready for the next release.  
-Most frequently, this involves customizing the hypot_packages.yaml file that the release file gets from the repository.   
-To avoid repeated updates of the config file and checksums to test a new version number, etc. you want to download that file from Git as well, and change your spack.yaml file to use the local copy. 
+However, we probalby wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
+Most frequently, this involves customizing the `hypot_packages.yaml` file that the release file gets from the repository.   
+To avoid repeated updates of the config file and checksums to test a new version number, etc. you want to download that file from Git as well, and change your `spack.yaml` file to use the local copy. 
 
 .. code-block:: shell
 
   wget https://github.com/hypot/hypot-release-configs/blob/main/included_yaml/hypot-packages.yaml
 
-Then you want to edit the spack.yaml file and change it to use the local file instead; this changes the entry under include: to look like:
+Then you want to edit the `spack.yaml` file and change it to use the local file instead; this changes the entry under include: to look like:
 
 .. code-block:: yaml
 
@@ -287,21 +293,21 @@ Then you want to edit the spack.yaml file and change it to use the local file in
     - ./hypot-packages.yaml
 
 You see above, we huave commented out both the URL path and the sha256 checksum line, and just put the local filename in its place.   
-Now we can update version numbers, add/remove required variants, etc. to assist in getting the build we want, without a lot of git commit/push operations and sha256 hash updates.
+Now we can update version numbers, add or remove required variants, etc. to assist in getting the build we want, without a lot of git commit/push operations and sha256 hash updates.
 
-Once we have a version of the hypot_packages.yaml file we like, we can commit itto our config repository, compute the new sha256 sum for it, commit the spack.yaml file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
+Once we have a version of the `hypot_packages.yaml` file we like, we can commit itto our config repository, compute the new sha256 sum for it, commit the `spack.yaml` file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
 
 Adding built packages to a buildcache
 =====================================
 
-Once you have packages built, you can make signed buildcache images, and upload them to the appropriate buildcache. 
-First you will need a GnuPG signing key installed in your spack instance, if you don't have one already.
+Once you have packages built, you can make signed *buildcache* images, and upload them to the appropriate *buildcache*. 
+First you will need a *GnuPG* signing key installed in your spack instance, if you don't have one already.
 
 Installing a signing key
 ------------------------
 
 If this is a new Spack build instance, you likely do not have any signing keys installed in it to sign your packages.  
-If your experiment has a pgp key or key(s) for signing official binaries already, you can add it; if you don't have one you can create one.
+If your experiment has a *pgp* key or key(s) for signing official binaries already, you can add it; if you don't have one you can create one.
 
 .. code-block:: shell
 
@@ -318,7 +324,7 @@ If your experiment has a pgp key or key(s) for signing official binaries already
   spack gpg trust secret-key-file
   rm secret-key-file public-key-file
 
-where the somehost:/some/place/safe should be somwhere like /opt/hypotpro on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
+where the `somehost:/some/place/safe` should be somwhere like `/opt/hypotpro` on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
 
 Or you may want to use a signing key specific to yourself, personally, and keep it wherever you keep such things.
 
@@ -335,16 +341,16 @@ Now you can activate your spack build environment, and make signed buildcache im
 
 This will 
 
-* create a buildcache in the "bc" subdirectory
-* sign the binaries with your hypotcode@fnal.gov GnuPG key
+* create a *buildcache* in the `bc` subdirectory
+* sign the binaries with your hypotcode@fnal.gov *GnuPG* key
 * only include packages from the local spack instance
-* omit packages installed from a buildcache 
+* omit packages installed from a *buildcache* 
 * include build dependencies, not just runtime ones
 
 Moving the buildcache images to SciSoft
 =======================================
 
-Now (assuming you have suitable permissions) you can upload the buildcache files to SciSoft or spack-cache-1 and update the buildcache index.  
+Now (assuming you have suitable permissions) you can upload the *buildcache* files to SciSoft or spack-cache-1 and update the *buildcache* index.  
 
 
 .. code-block:: shell
@@ -364,8 +370,8 @@ Now if you have a spack instance in /cvmfs, you can install these new packages i
 (This assumes you have permissions to use the cvmfshypot@oasiscfs.fnal.gov account to update cvmfs)
 The most effective way is to 
 * start a cvmfs transaction
-* recreate the environment from the spack.lock file from your build
-* use spack install --cache-only to populate it
+* recreate the environment from the `spack.lock` file from your build
+* use `spack install --cache-only` to populate it
 * publish the cvmfs transaction
 This looks like:
 
@@ -407,11 +413,11 @@ Automating builds with FNAL Jenkins and build-spack-env.sh
 The `fermi-spack-tools <https://github.com/FNALssi/fermi-spack-tools>` package has a ``build-spack-env.sh`` script that is very useful for doing automated Spack builds on our site Jenkins infrastructure -- it runs through pretty much the entire process described in this document of 
 
 * setting up a spack instance, 
-* fetchin an environment spack.yaml file from a given URL
+* fetchin an environment `spack.yaml` file from a given URL
 * installing neccesary compilers
-* creating an environment from the downloded spack.yaml
+* creating an environment from the downloded `spack.yaml`
 * concretizing it
-* doing the spack install (with optional --test arguments)
-* creating the buildcache images of the build as Jenkins artifacts
+* doing the `spack install` (with optional --test arguments)
+* creating the *buildcache* images of the build as Jenkins artifacts
 
 If you have gotten a Jenkins account (link needed), and have VPN, you can examine the project here (link needed) for an example of using this script. 
