@@ -1,3 +1,14 @@
+Building updated packages
+=========================
+
+Often we have updated versions of packages in our environment, like 
+data management tools, etc. that are relased on a different schedule
+than the main software releases; maintainers may wish to distribute
+a new version of a package compatible with the existing distribution.
+
+Setting up
+----------
+
 Make a build spack instance if you don't have it, and put your spack signing keys in it.  If you don't have a spack signing key, see `these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-a-signing-key>`__
 
 .. code-block:: shell
