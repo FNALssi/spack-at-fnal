@@ -57,6 +57,7 @@ Reading the spack concretize output
 When you concretize, spack should give you output that looks like:
 
 .. code-block: bash
+
     ==> Concretized 1 spec:
      -   wzwrx6v  metacat@4.1.4+client_only build_system=python_pip platform=linux os=almalinux9 target=x86_64_v3 
      -   ahw4ylu      ^py-lark@1.1.2 build_system=python_pip platform=linux os=almalinux9 target=x86_64_v3 
@@ -72,11 +73,11 @@ where each dependent package with all of its version, variant, etc flags are lis
 
 `` - ``
    in the first 3 columns is a package spack thinks it should rebuild
- ``[^]`` 
+``[^]`` 
    indicates a package reused from the upstream spack instance
- ``[+]`` 
+``[+]`` 
    indicates a package installed in the current spack instance
- ``[e]`` 
+``[e]`` 
    indicates an external (system) package
 
 Basically, our goal is for the output of our concretize to only show a dash-ed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
@@ -88,6 +89,7 @@ Getting more reuse
 If you're finding the spack concretize step is wanting to rebuild a lot of packages that already exist in the upstream environment, you can update the spec in the spack.yaml file to be more specific about reuse:
 
 .. code-block:: shell
+
    $ spack -e larsoft-v10_11_01-unified-cuda-python-3_10-trimmed-m3 find --long py-webpie python
    ==> In environment larsoft-v10_11_01-unified-cuda-python-3_10-trimmed-m3
    ==> 61 root specs
@@ -102,6 +104,7 @@ If you're finding the spack concretize step is wanting to rebuild a lot of packa
 and then update the spack.yaml file with dependencies on the specific hashed versions:
 
 .. code-block:: yaml
+
    spack:
      specs:
      - my-package@1.2.3 ^python/ppik5zk ^py-webpie/lojz5wk 
@@ -120,15 +123,16 @@ spack-cache-1.
 
   
 .. code-block:: shell
+
    spack localbuildcache --local --key mykey
    scp -r bc/* scisoftbuild02.fnal.gov:/SciSoft/spack-mirror/spack-binary-cache-v3
    ssh scisoftbuild02.fnal.gov <<EOF
      source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
      spack buildcache update-index /SciSoft/spack-mirror/spack-binary-cache-v3
-  EOF
+   EOF
 
 Now you or the experiment package maintainers can install the package into
-cvmfs following ``these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>``__
+cvmfs following `these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>`__
 
 
 
