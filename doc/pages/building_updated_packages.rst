@@ -56,7 +56,7 @@ Reading the spack concretize output
 
 When you concretize, spack should give you output that looks like:
 
-.. code-block: bash
+.. code-block:: bash
 
     ==> Concretized 1 spec:
      -   wzwrx6v  metacat@4.1.4+client_only build_system=python_pip platform=linux os=almalinux9 target=x86_64_v3 
@@ -71,14 +71,10 @@ When you concretize, spack should give you output that looks like:
 
 where each dependent package with all of its version, variant, etc flags are listed.  The lines all start with a status, one of:
 
-`` - ``
-   in the first 3 columns is a package spack thinks it should rebuild
-``[^]`` 
-   indicates a package reused from the upstream spack instance
-``[+]`` 
-   indicates a package installed in the current spack instance
-``[e]`` 
-   indicates an external (system) package
+* ``-`` a dash in the first 3 columns is a package spack thinks it should rebuild
+* ``[^]`` bracketed carat indicates a package reused from the upstream spack instance
+* ``[+]`` bracketed plus indicates a package installed in the current spack instance
+* ``[e]`` brackeded e indicates an external (system) package
 
 Basically, our goal is for the output of our concretize to only show a dash-ed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
 You might also find spack wanting to rebuild/reinstall some build dependencies that didn't get put into the upstream spack instance -- packages like py-setuptools and py-wheel -- this is okay.
@@ -124,6 +120,7 @@ spack-cache-1.
   
 .. code-block:: shell
 
+   spack install
    spack localbuildcache --local --key mykey
    scp -r bc/* scisoftbuild02.fnal.gov:/SciSoft/spack-mirror/spack-binary-cache-v3
    ssh scisoftbuild02.fnal.gov <<EOF
