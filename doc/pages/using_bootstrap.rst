@@ -10,14 +10,9 @@ At Fermilab, we recommend using our `bootstrap` script from our fermi-spack-tool
 * fetch a release branch of our bootstrap script with wget or curl, one of
    * `fnal-v1.1.1 <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.1.1/bin/bootstrap>`__ — gets the matching fnal-v1.1.1 branch of Spack by default.
    * `fnal-v1.1.0 <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.1.0/bin/bootstrap>`__ — gets the matching fnal-v1.1.0 branch of Spack by default   
-   * `fnal-v1.0.0 <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.0.0/bin/bootstrap>`__ — gets the matching fnal-v1.0.0 branch of Spack by default
-   * `v2.23.0 <https://github.com/FNALssi/fermi-spack-tools/raw/v2_23_0/bin/bootstrap>`__ — previous supported version,  defaults to v0.23.0-fermi
-   * `v2.21.0 <https://github.com/FNALssi/fermi-spack-tools/raw/v2_21_0/bin/bootstrap>`__ — defaults to v0.21.0-fermi
-   * `v2.20.0 <https://github.com/FNALssi/fermi-spack-tools/raw/v2_20_0/bin/bootstrap>`__ 
    * `fnal-develop <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-develop/bin/bootstrap>`__ 
 * run "bash bootstrap.sh /install/location" 
-* Get a cup of coffee or your favorite beverage
-* source /path/to/directory/setup-env.sh 
+* source /install/location/setup-env.sh 
 
 Sample session:
 
