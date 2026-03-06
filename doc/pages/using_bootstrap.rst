@@ -8,9 +8,11 @@ At Fermilab, we recommend using our `bootstrap` script from our fermi-spack-tool
 
 * pick a directory path  where you want to place your spack instance
 * fetch a release branch of our bootstrap script with wget or curl, one of
+
    * `fnal-v1.1.1 <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.1.1/bin/bootstrap>`__ — gets the matching fnal-v1.1.1 branch of Spack by default.
    * `fnal-v1.1.0 <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-v1.1.0/bin/bootstrap>`__ — gets the matching fnal-v1.1.0 branch of Spack by default   
    * `fnal-develop <https://github.com/FNALssi/fermi-spack-tools/raw/refs/heads/fnal-develop/bin/bootstrap>`__ 
+
 * run "bash bootstrap.sh /install/location" 
 * source /install/location/setup-env.sh 
 
