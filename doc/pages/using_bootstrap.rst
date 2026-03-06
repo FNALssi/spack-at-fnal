@@ -1,6 +1,9 @@
 Using the fermi-spack-tools bootstrap script
 ============================================
 
+Introduction
+------------
+
 At Fermilab, we recommend using our `bootstrap` script from our fermi-spack-tools package.
 
 * pick a directory path  where you want to place your spack instance
@@ -34,7 +37,7 @@ Sample session:
 
 
 Common options to the bootstrap script
-======================================
+--------------------------------------
 
 Besides the mandatory destination directory argument, the bootstrap script 
 takes a short list of optional arguments:
@@ -55,7 +58,7 @@ takes a short list of optional arguments:
   set the git repository for the above
 
 If Something Goes Wrong
-=======================
+-----------------------
 
 If the bootstrap says that it failed to complete successfully, you can 
 check for a few obvious problems, and if those aren't the issue, you should
