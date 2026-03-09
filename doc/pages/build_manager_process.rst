@@ -140,7 +140,7 @@ This will be an Spack environment `spack.yaml` file, with includes of the variou
       - $specs_nusofthep
       - $specs_larsoft
       - $fife_specs
-      - $specs_dune
+      - $hypot_specs
     concretizer:
       unify: true
       reuse:
@@ -246,7 +246,7 @@ In this subspack, you will already have access to the compilers that are availab
 Setting up the Spack instance
 -----------------------------
 
-Both of the above will give you a writable Spack instance at `/path/to/location`` with our standard Fermi path padding turned on, for building redistributable binary packages.
+Both of the above will give you a writable Spack instance at `/path/to/location` with our standard Fermi path padding turned on, for building redistributable binary packages.
 Having created the instance, you need to set it up, and then we can create the build environment
 
 .. code-block:: shell
@@ -292,15 +292,15 @@ Then you want to edit the `spack.yaml` file and change it to use the local file 
     #  sha256: f36085e9de736feb765305bebc170593d767a046c94b5489f4ca0082ab4d6754
     - ./hypot-packages.yaml
 
-You see above, we huave commented out both the URL path and the sha256 checksum line, and just put the local filename in its place.   
+You see above, we have commented out both the URL path and the sha256 checksum line, and just put the local filename in its place.   
 Now we can update version numbers, add or remove required variants, etc. to assist in getting the build we want, without a lot of git commit/push operations and sha256 hash updates.
 
-Once we have a version of the `hypot_packages.yaml` file we like, we can commit itto our config repository, compute the new sha256 sum for it, commit the `spack.yaml` file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
+Once we have a version of the `hypot_packages.yaml` file we like, we can commit it to our config repository, compute the new sha256 sum for it, commit the `spack.yaml` file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
 
 Adding built packages to a buildcache
 =====================================
 
-Once you have packages built, you can make signed *buildcache* images, and upload them to the appropriate *buildcache*. 
+Once you have packages built, you can make signed *buildcache* images, and upload them to the appropriate *buildcache* mirror directory. 
 First you will need a *GnuPG* signing key installed in your spack instance, if you don't have one already.
 
 Installing a signing key
