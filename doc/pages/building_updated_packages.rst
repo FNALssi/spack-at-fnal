@@ -1,10 +1,12 @@
-Building updated packages
-=========================
+Building compatible updated packages
+====================================
 
-Often we have updated versions of packages in our environment, like 
+Often we need to update versions of packages in our environment, like 
 data management tools, etc. that are relased on a different schedule
 than the main software releases; maintainers may wish to distribute
 a new version of a package compatible with the existing distribution.
+Then users can spack load the new version without changing other packages
+out from underneath the current environment.
 
 Setting up
 ----------
@@ -71,7 +73,9 @@ When you concretize, spack should give you output that looks like:
 
 where each dependent package with all of its version, variant, etc flags are listed.  The lines all start with a status, one of:
 
-* ``-`` a dash in the first 3 columns is a package spack thinks it should rebuild
+.. |nbsp| unicode:: U+00A0 .. nbsp
+
+* |nbsp| ``-`` |nbsp| a dash in the first 3 columns is a package spack thinks it should rebuild
 * ``[^]`` bracketed carat indicates a package reused from the upstream spack instance
 * ``[+]`` bracketed plus indicates a package installed in the current spack instance
 * ``[e]`` brackeded e indicates an external (system) package
@@ -82,7 +86,8 @@ You might also find spack wanting to rebuild/reinstall some build dependencies t
 Getting more reuse
 ------------------
 
-If you're finding the spack concretize step is wanting to rebuild a lot of packages that already exist in the upstream environment, you can update the spec in the spack.yaml file to be more specific about reuse:
+If you're finding the spack concretize step is wanting to rebuild a lot of packages that already exist in the upstream environment, you can update the spec in the spack.yaml file to be more specific about reuse.
+Basically you want to look in the reuse environment for the exact hash of the package it didn't reuse, and add that as an explicit dependency.  This looks like:
 
 .. code-block:: shell
 
@@ -110,16 +115,34 @@ And do a ``spack concretize -f`` to reconcretize it.
 With just a few iterations like this, you should be able to get a minimal
 rebuild.
 
+A short note on strategy here; it is usually fastest to specify the dependencies that are least indented 
+in the "spack concretize" output.
+It can also be very helpful to do 
+
+.. code-block:: shell
+
+   spack concretize -f | tee concretize.out
+
+when concretizing to save a copy of the concretizer output to review what is being rebuilt and what isn't. 
+Then you can do things like 
+
+.. code-block:: shell
+
+   grep '[a-z0-9]      ^' concretize.out
+
+(that is with 6 blanks) to see all the first-level dependencies  to see which of them might need specifying.
+
 Distributing the package
 ------------------------
 
 Now that you have the concretization issues settled, you should be able to
-build the package, make a buildcache image, and put it onto scisoft or
+build the package, make a buildcache image, and put it onto scisoft.fnal.gov or
 spack-cache-1.
-
+This looks like:
   
 .. code-block:: shell
 
+   spack cd --env
    spack install
    spack localbuildcache --local --key mykey
    scp -r bc/* scisoftbuild02.fnal.gov:/SciSoft/spack-mirror/spack-binary-cache-v3
@@ -128,8 +151,8 @@ spack-cache-1.
      spack buildcache update-index /SciSoft/spack-mirror/spack-binary-cache-v3
    EOF
 
-Now you or the experiment package maintainers can install the package into
-cvmfs following `these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>`__
+Now you or the experiment package maintainers can install the package into cvmfs following
+`these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>`__
 
 
 
