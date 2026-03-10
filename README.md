@@ -1,5 +1,6 @@
 # spack-at-fnal
 Documentation describing Spack use at Fermilab.
+Now rendered to [fnalssi.github.io](https://fnalssi.github.io/spack-at-fnal/).
 
 ## Set up to build spack-at-fnal
 
