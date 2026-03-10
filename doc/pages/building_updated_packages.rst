@@ -154,5 +154,36 @@ This looks like:
 Now you or the experiment package maintainers can install the package into cvmfs following
 `these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>`__
 
+Replacing package dependencies
+------------------------------
+
+Sometimes there is a package that needs to be updated in existing environments, either for security reasons, 
+or because it reflects a configuration change that represents real world changes, where you need to 
+flat out replace a package with a new version.   
+A common example of this is the data management package ``ifdhc_config``, which knows thinks like service 
+servernames, etc. and needs to be updated when those servers change.
+Having built a compatible version of the package, as above, one can make a change like this using
+the ``spack deprecate`` command, specifying that the old version of the package be replaced by the
+new one. 
+In a CVMFS instance this would be done right after installing the new version, but before you
+publish the CVMFS transaction; and looks like
+
+.. code-block:: shell
+
+   $ spack find --long ifdhc_config
+   -- linux-almalinux9-x86_64_v2 / no compilers --------------------
+   vtkszyk ifdhc-config@2.6.20  zgxkyy3 ifdhc-config@2.7.2
+   kebqcx2 ifdhc-config@2.6.20  gnj5lfy ifdhc-config@2.7.2
+   qxgzxem ifdhc-config@2.6.20  t7gveqv ifdhc-config@2.7.3
+   ...
+   $ spack deprecate -D ifdhc-config/zgxkyy3 ifdhc-config/gnj5lfy ifdhc-config/t7gveqv
+
+where the two 2.7.2 versions of ifdhc-config would be pointed at ifdhc-config@2.7.3.
+It is recommended to do these explicitly by hash values like this so you don't inadvertently
+modify the wrong instances.
+The -D flag says to *not* similarly deprecate the dependencies of those packages.
+Again, this is to not modify more things than you meant to.
+
+You can read more about ``spack deprecate`` in the `Spack documentation <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html#deprecating-old-versions>`__
 
 
