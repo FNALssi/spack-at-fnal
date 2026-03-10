@@ -1,12 +1,14 @@
-Building compatible updated packages
-====================================
+Building Compatible Updated and New Packages
+============================================
 
 Often we need to update versions of packages in our environment, like 
 data management tools, etc. that are relased on a different schedule
 than the main software releases; maintainers may wish to distribute
 a new version of a package compatible with the existing distribution.
-Then users can spack load the new version without changing other packages
-out from underneath the current environment.
+Or we may need to build an altogether new package which we would like
+to be compatible with an existing package suite.
+Then users can ``spack load`` the new package version without changing 
+other packages out from underneath their current environment.
 
 Setting up
 ----------
