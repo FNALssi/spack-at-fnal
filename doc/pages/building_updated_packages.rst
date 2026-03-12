@@ -39,19 +39,39 @@ where the spack.yaml ends up looking like
 .. code-block:: yaml
 
   spack:
+
+    # things to build:
     specs:
     - my-package@1.2.3
 
+    # have concretizer reuse from the particular upstream environment
     concretizer:
       unify: true
       reuse:
         from:
         - type: environment
-          path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified-cuda-python-3_10-trimmed-m3
+          path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified-cuda-python-3_9-trimmed
+
+    # set preferred compilers, target, etc.
     packages:
       all:
-        require:
-        - target=x86_64_v3
+        providers:
+          libc:
+          - glibc
+          'zlib-api:':
+          - zlib
+          c:
+          - gcc@12.5.0
+          cxx:
+          - gcc@12.5.0
+          fortran:
+          - gcc@12.5.0
+        variants:
+        - generator=ninja
+        - build_type=Release
+        - cxxstd=17
+        target:
+          - x86_64_v2
 
 And now when you concretize your package, it should be basically the only package rebuilt... but sometimes it isn't.
 
@@ -93,8 +113,8 @@ Basically you want to look in the reuse environment for the exact hash of the pa
 
 .. code-block:: shell
 
-   $ spack -e larsoft-v10_11_01-unified-cuda-python-3_10-trimmed-m3 find --long py-webpie python
-   ==> In environment larsoft-v10_11_01-unified-cuda-python-3_10-trimmed-m3
+   $ spack -e larsoft-v10_11_01-unified-cuda-python-3_9-trimmed find --long py-webpie python
+   ==> In environment larsoft-v10_11_01-unified-cuda-python-3_9-trimmed
    ==> 61 root specs
    ...
    -- linux-almalinux9-x86_64_v2 / %c,cxx=gcc@12.5.0 ---------------
