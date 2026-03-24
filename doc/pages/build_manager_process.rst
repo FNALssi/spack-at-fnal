@@ -22,7 +22,7 @@ This *global solve* is the mechanism by which Spack can ensure that we produce a
 N.B. For finding new versions, Spack works best with dotted versions for packages. It is recommended that dotted tags, e.g. XX.YY.XX.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added.
 
 Build environment configuration files
--------------------------------
+-------------------------------------
 
 The reference builds and the various experiment software stacks should be built in Spack build environments [1]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
 In particular we expect each experiment to have, under version control, a build configuration repository of at least 3 files:
