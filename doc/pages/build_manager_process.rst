@@ -19,8 +19,9 @@ This will involve (at least) 2 Git repositories (besides the repositories for th
 
 These two repositories for each experiment, properly configured, will allow CSAID to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
 This *global solve* is the mechanism by which Spack can ensure that we produce a single consistent set of packages that will work together and which satisfy the set of constraints imposed by the recipes of all the different participating experiments.
-N.B. For finding new versions, Spack works best with dotted versions for packages. It is recommended that dotted tags be added at the same time that vXX_YY_ZZ_PP tagged versions are added.
+N.B. For finding new versions, Spack works best with dotted versions for packages. It is recommended that dotted tags, e.g. XX.YY.XX.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added.
 
+Build environment configuration files
 -------------------------------
 
 The reference builds and the various experiment software stacks should be built in Spack build environments [1]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
