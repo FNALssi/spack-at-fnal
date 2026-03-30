@@ -76,11 +76,11 @@ These YAML [2]_ files will contain a dictionary named *packages*, mapping packag
       require:
       - '@=1.2.09:'
     art:
-    require:
-    - '@=3.14:'
-  boost:
-    require:
-    - '+iostreams+json'
+      require:
+      - '@=3.14:'
+    boost:
+      require:
+      - '+iostreams+json'
 
 Note that this file may add requirements to non-experiment packages (i.e. **boost** and **art**, above), if they are required for the experiment software. 
 Version restrictions (like the above example for **art**) should really be included in the dependency definitions in the appropriate package's recipe file; but can be included here if needed.
