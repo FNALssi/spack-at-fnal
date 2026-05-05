@@ -1,6 +1,6 @@
-===============================================
-Build Manager Processes for Experiment Software
-===============================================
+==========================
+Build Manager Instructions
+==========================
 
 The Fermilab SCD division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
 These packages are used to build experiment software stacks.

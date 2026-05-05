@@ -1,5 +1,5 @@
-Using the fermi-spack-tools bootstrap script
-============================================
+Installing Spack at Fermilab
+============================
 
 Introduction
 ------------

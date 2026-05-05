@@ -1,5 +1,5 @@
-Building Compatible Updated and New Packages
-============================================
+Building New Packages
+=====================
 
 Often we need to update versions of packages in our environment, like 
 data management tools, etc. that are relased on a different schedule
