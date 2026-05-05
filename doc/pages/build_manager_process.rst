@@ -1,8 +1,8 @@
-===========================================================================
-Build Manager Processes for Experiment software using CSAID Shared Software
-===========================================================================
+===============================================
+Build Manager Processes for Experiment Software
+===============================================
 
-The Fermilab CSAID directorate develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
+The Fermilab SCD division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
 These packages are used to build experiment software stacks.
 To allow a single reference build of those software packages to work for our various experiment customers, we request they follow the following procedures when building and distributing their software.
 
@@ -17,7 +17,7 @@ This will involve (at least) 2 Git repositories (besides the repositories for th
 * one for Spack build recipes, and 
 * one for Spack build environment configuration files and fragments.
 
-These two repositories for each experiment, properly configured, will allow CSAID to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
+These two repositories for each experiment, properly configured, will allow SCD to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
 This *global solve* is the mechanism by which Spack can ensure that we produce a single consistent set of packages that will work together and which satisfy the set of constraints imposed by the recipes of all the different participating experiments.
 
 N.B. For finding new versions, Spack works best with dotted versions for packages. It is recommended that dotted tags, e.g. XX.YY.ZZ.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added.
@@ -35,7 +35,7 @@ In particular we expect each experiment to have, under version control, a build 
 These files should be under version control in order to provide different branched versions of those files for different purposes, to be explained in more detail below.
 
 The files above for a particular experiment should be in a repository controlled by that experiment.
-Similarly there will be build configuration files for the various CSAID projects, like **larsoft**, **phlex**, **art**, **fife**, etc.
+Similarly there will be build configuration files for the various SCD projects, like **larsoft**, **phlex**, **art**, **fife**, etc.
 
 These configuration repositories should have branches with variants of the above files, allowing checking out a version of the above files which use `@develop` (or similar tags) for the version, (or building CI test builds, etc.), as well as tagged versions for their various software releases.
 
@@ -56,7 +56,7 @@ These are usually just as package names, for example:
     - hypotutils
     ...
 
-This definition list will be used in the experiment build configuration file, but also by the CSAID teams building the share packages in a *global solve*. 
+This definition list will be used in the experiment build configuration file, but also by the SCD teams building the share packages in a *global solve*. 
 
 Packages files `hypot_packages.yaml`
 ------------------------------------

@@ -1,7 +1,7 @@
 Layered Environments
 ====================
 
-The mechanism through which we will deliver built distributions of CSAID-supported software is *Spack environments*.
+The mechanism through which we will deliver built distributions of SCD-supported software is *Spack environments*.
 In order to facilitate sharing of built software products, we will use *layered environments*.
 This document explains what a layered environment is, now we build them, and how we use them.
 
@@ -28,7 +28,7 @@ Spack environments are fully documentted at https://spack.readthedocs.io/en/late
 Layered Environments
 --------------------
 
-A goal of CSAID is to provide reliable builds of software stacks relied upon by experiments.
+A goal of SCD is to provide reliable builds of software stacks relied upon by experiments.
 To this end, we build and distribute consistent versions of software environments that can be shared by as many experiments as feasible.
 Because different experiments have different amounts of software in common, we have identified a set of "layers" that we will build and distribute.
 Each of these layers is realized as a Spack environment that can either be activated directly or, more commonly, be *resused* in an experiment-specific Spack environment.
