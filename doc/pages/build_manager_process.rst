@@ -186,8 +186,8 @@ With some version of the above files and repositories available, building a vers
 * doing a `spack concretize` and `spack install` to do a test build of the software
 * committing and tagging the versions of the `hypot_package.yaml` and build config `spack.yaml` files used in the build 
 * doing an actual release build, using the checksummed, tagged, version of the files from the from the experiment config repository.
-* making *buildcache* images of the built binary packages
-* installing the *buildcache* images into CVMFS package areas via a *buildcache mirror*.
+* making *build cache tarballs* of the built binary packages
+* installing the *build cache tarballs* into CVMFS package areas via a *build cache mirror*.
 
 We will now discuss these steps in more detail.
 
@@ -224,7 +224,7 @@ If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack
 where you give a path to where you want the spack instance to appear.
 
 You then want to make sure to install the compilers you want into your standalone instance. 
-Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the build cache mirror.
+Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the *build cache mirror*.
 
 .. code-block:: shell
 
@@ -299,10 +299,10 @@ Now we can update version numbers, add or remove required variants, etc. to assi
 
 Once we have a version of the `hypot_packages.yaml` file we like, we can commit it to our config repository, compute the new sha256 sum for it, commit the `spack.yaml` file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
 
-Adding built packages to a buildcache mirror
-============================================
+Adding built packages to a build cache mirror
+=============================================
 
-Once you have packages built, you can make signed *buildcache* images, and upload them to the appropriate *buildcache* mirror directory. 
+Once you have packages built, you can make signed *buildcache tarballs*, and upload them to the appropriate *build cache mirror* directory. 
 First you will need a *GnuPG* signing key installed in your spack instance, if you don't have one already.
 
 Installing a signing key
@@ -333,7 +333,7 @@ Or you may want to use a signing key specific to yourself, personally, and keep 
 Packing up your build for distribution
 ======================================
 
-Now you can activate your spack build environment, and make signed buildcache images for the new build:
+Now you can activate your spack build environment, and make signed build cache tarballs for the new build:
 
 .. code-block:: shell
 
@@ -343,7 +343,7 @@ Now you can activate your spack build environment, and make signed buildcache im
 
 This will 
 
-* create a *buildcache mirror* in the `bc` subdirectory
+* create a *build cache mirror* in the `bc` subdirectory
 * sign the binaries with your hypotcode@fnal.gov *GnuPG* key
 * only include packages from the local spack instance
 * omit packages installed from a *buildcache mirror* 
@@ -352,7 +352,7 @@ This will
 Moving the buildcache images to SciSoft
 =======================================
 
-Now (assuming you have suitable permissions) you can upload the *buildcache* files to SciSoft or spack-cache-1 and update the *buildcache mirror* index.  
+Now (assuming you have suitable permissions) you can upload the *build cache tarballs* to SciSoft or spack-cache-1 and update the *build cache mirror* index.  
 
 
 .. code-block:: shell
@@ -420,6 +420,6 @@ The `fermi-spack-tools <https://github.com/FNALssi/fermi-spack-tools>` package h
 * creating an environment from the downloded `spack.yaml`
 * concretizing it
 * doing the `spack install` (with optional --test arguments)
-* creating the *buildcache* images of the build as Jenkins artifacts
+* creating the *build icache tarballs* of the build as Jenkins artifacts
 
 If you have gotten a Jenkins account (link needed), and have VPN, you can examine the project here (link needed) for an example of using this script. 
