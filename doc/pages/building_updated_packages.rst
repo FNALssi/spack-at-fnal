@@ -159,7 +159,7 @@ Distributing the package
 
 Now that you have the concretization issues settled, you should be able to
 build the package, make a buildcache image, and put it onto scisoft.fnal.gov or
-spack-cache-1.
+spack-cache-1 buildcache mirrors. 
 This looks like:
   
 .. code-block:: shell

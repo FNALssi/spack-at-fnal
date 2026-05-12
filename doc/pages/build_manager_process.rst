@@ -186,8 +186,8 @@ With some version of the above files and repositories available, building a vers
 * doing a `spack concretize` and `spack install` to do a test build of the software
 * committing and tagging the versions of the `hypot_package.yaml` and build config `spack.yaml` files used in the build 
 * doing an actual release build, using the checksummed, tagged, version of the files from the from the experiment config repository.
-* making a *buildcache* of the built binary packages
-* installing the buildacache images into CVMFS package areas.
+* making *buildcache* images of the built binary packages
+* installing the *buildcache* images into CVMFS package areas via a *buildcache mirror*.
 
 We will now discuss these steps in more detail.
 
@@ -224,7 +224,7 @@ If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack
 where you give a path to where you want the spack instance to appear.
 
 You then want to make sure to install the compilers you want into your standalone instance. 
-Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the build cache.
+Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the build cache mirror.
 
 .. code-block:: shell
 
@@ -299,8 +299,8 @@ Now we can update version numbers, add or remove required variants, etc. to assi
 
 Once we have a version of the `hypot_packages.yaml` file we like, we can commit it to our config repository, compute the new sha256 sum for it, commit the `spack.yaml` file to the repository, and tag it, and do a build which is getting the tagged config file from the repository. 
 
-Adding built packages to a buildcache
-=====================================
+Adding built packages to a buildcache mirror
+============================================
 
 Once you have packages built, you can make signed *buildcache* images, and upload them to the appropriate *buildcache* mirror directory. 
 First you will need a *GnuPG* signing key installed in your spack instance, if you don't have one already.
@@ -343,16 +343,16 @@ Now you can activate your spack build environment, and make signed buildcache im
 
 This will 
 
-* create a *buildcache* in the `bc` subdirectory
+* create a *buildcache mirror* in the `bc` subdirectory
 * sign the binaries with your hypotcode@fnal.gov *GnuPG* key
 * only include packages from the local spack instance
-* omit packages installed from a *buildcache* 
+* omit packages installed from a *buildcache mirror* 
 * include build dependencies, not just runtime ones
 
 Moving the buildcache images to SciSoft
 =======================================
 
-Now (assuming you have suitable permissions) you can upload the *buildcache* files to SciSoft or spack-cache-1 and update the *buildcache* index.  
+Now (assuming you have suitable permissions) you can upload the *buildcache* files to SciSoft or spack-cache-1 and update the *buildcache mirror* index.  
 
 
 .. code-block:: shell
