@@ -302,7 +302,7 @@ Once we have a version of the `hypot_packages.yaml` file we like, we can commit 
 Adding built packages to a build cache mirror
 =============================================
 
-Once you have packages built, you can make signed *buildcache tarballs*, and upload them to the appropriate *build cache mirror* directory. 
+Once you have packages built, you can make signed *build cache tarballs*, and upload them to the appropriate *build cache mirror* directory. 
 First you will need a *GnuPG* signing key installed in your spack instance, if you don't have one already.
 
 Installing a signing key
@@ -346,10 +346,10 @@ This will
 * create a *build cache mirror* in the `bc` subdirectory
 * sign the binaries with your hypotcode@fnal.gov *GnuPG* key
 * only include packages from the local spack instance
-* omit packages installed from a *buildcache mirror* 
+* omit packages installed from a *build cache mirror* 
 * include build dependencies, not just runtime ones
 
-Moving the buildcache images to SciSoft
+Moving the build cache images to SciSoft
 =======================================
 
 Now (assuming you have suitable permissions) you can upload the *build cache tarballs* to SciSoft or spack-cache-1 and update the *build cache mirror* index.  
