@@ -96,6 +96,7 @@ This will be an Spack environment `spack.yaml` file, with includes of the variou
 For example:
 
 .. code-block:: yaml
+
   # Note that the SHA256 sums and the version number in this file are only
   # examples, and are not recommended values of any real build.
 
@@ -209,12 +210,12 @@ There are two approaches to setting up a Spack build instance:
 which we will discuss below; in either case we want to configure such an instance which:
 
 * is in a read-write file system
-* is configured with Spack path-padding so binary packages are redistribable
+* is configured with Spack path-padding so binary packages are redistributable
 * knows about appropriate compilers
 * has signing keys installed for signing binary packages for distribution
 
 A *subspack* / chained instance will generally take less disk space and setup faster than a standalone instance.
-However, if you don't have access to an existing intance to base it from, or you want to be insulated from the compilers available, existing packages, etc., in the existing instance, you may find a standalone instance preferable.
+However, if you don't have access to an existing instance to base it from, or you want to be insulated from the compilers available, existing packages, etc., in the existing instance, you may find a standalone instance preferable.
 
 
 Creating a Standalone instance
@@ -333,7 +334,7 @@ If your experiment has a *pgp* key or key(s) for signing official binaries alrea
   spack gpg trust secret-key-file
   rm secret-key-file public-key-file
 
-where the `somehost:/some/place/safe` should be somwhere like `/opt/hypotpro` on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
+where the `somehost:/some/place/safe` should be somewhere like `/opt/hypotpro` on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
 
 Or you may want to use a signing key specific to yourself, personally, and keep it wherever you keep such things.
 
@@ -372,8 +373,8 @@ Now (assuming you have suitable permissions) you can upload the *build cache tar
    spack buildcache update-index /SciSoft/spack-mirror/spack-binary-cache-v3
   EOF
 
-Installing the built packges in /cvmfs
-======================================
+Installing the built packages in /cvmfs
+=======================================
 
 Now if you have a spack instance in /cvmfs, you can install these new packages into /cvmfs.  
 (This assumes you have permissions to use the cvmfshypot@oasiscfs.fnal.gov account to update cvmfs)
@@ -422,12 +423,12 @@ Automating builds with FNAL Jenkins and build-spack-env.sh
 The `fermi-spack-tools <https://github.com/FNALssi/fermi-spack-tools>` package has a ``build-spack-env.sh`` script that is very useful for doing automated Spack builds on our site Jenkins infrastructure -- it runs through pretty much the entire process described in this document of 
 
 * setting up a spack instance, 
-* fetchin an environment `spack.yaml` file from a given URL
-* installing neccesary compilers
-* creating an environment from the downloded `spack.yaml`
+* fetching an environment `spack.yaml` file from a given URL
+* installing necessary compilers
+* creating an environment from the downloaded `spack.yaml`
 * concretizing it
 * doing the `spack install` (with optional --test arguments)
-* creating the *build icache tarballs* of the build as Jenkins artifacts
+* creating the *build cache tarballs* of the build as Jenkins artifacts
 
 If you have gotten a Jenkins account (link needed), and have VPN, you can examine the project here (link needed) for an example of using this script. 
 

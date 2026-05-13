@@ -2,7 +2,7 @@ Building New Packages
 =====================
 
 Often we need to update versions of packages in our environment, like 
-data management tools, etc. that are relased on a different schedule
+data management tools, etc. that are released on a different schedule
 than the main software releases; maintainers may wish to distribute
 a new version of a package compatible with the existing distribution.
 Or we may need to build an altogether new package which we would like
@@ -98,11 +98,11 @@ where each dependent package with all of its version, variant, etc flags are lis
 .. |nbsp| unicode:: U+00A0 .. nbsp
 
 * |nbsp| ``-`` |nbsp| a dash in the first 3 columns is a package spack thinks it should rebuild
-* ``[^]`` bracketed carat indicates a package reused from the upstream spack instance
+* ``[^]`` bracketed caret indicates a package reused from the upstream spack instance
 * ``[+]`` bracketed plus indicates a package installed in the current spack instance
-* ``[e]`` brackeded e indicates an external (system) package
+* ``[e]`` bracketed e indicates an external (system) package
 
-Basically, our goal is for the output of our concretize to only show a dash-ed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
+Basically, our goal is for the output of our concretize to only show a dashed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
 You might also find spack wanting to rebuild/reinstall some build dependencies that didn't get put into the upstream spack instance -- packages like py-setuptools and py-wheel -- this is okay.
 
 Getting more reuse
@@ -173,7 +173,7 @@ This looks like:
    EOF
 
 Now you or the experiment package maintainers can install the package into cvmfs following
-`these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packges-in-cvmfs>`__
+`these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-the-built-packages-in-cvmfs>`__
 
 Replacing package dependencies
 ------------------------------
@@ -181,7 +181,7 @@ Replacing package dependencies
 Sometimes there is a package that needs to be updated in existing environments, either for security reasons, 
 or because it reflects a configuration change that represents real world changes, where you need to 
 flat out replace a package with a new version.   
-A common example of this is the data management package ``ifdhc_config``, which knows thinks like service 
+A common example of this is the data management package ``ifdhc_config``, which knows things like service 
 servernames, etc. and needs to be updated when those servers change.
 Having built a compatible version of the package, as above, one can make a change like this using
 the ``spack deprecate`` command, specifying that the old version of the package be replaced by the
@@ -206,5 +206,3 @@ The -D flag says to *not* similarly deprecate the dependencies of those packages
 Again, this is to not modify more things than you meant to.
 
 You can read more about ``spack deprecate`` in the `Spack documentation <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html#deprecating-old-versions>`__
-
-

@@ -52,7 +52,7 @@ takes a short list of optional arguments:
 \--fermi_spack_tools_release ver
   fetch the labeled version of fermi_spack_tools
 \--fermi_spack_tools_repo url  
-  set the git reposity for the above
+  set the git repository for the above
 \--spack_release ver                 
   fetch the labeled version/branch of Spack
 \--spack_repo url                    
@@ -106,5 +106,4 @@ Reporting a failed bootstrap
 Make a servicedesk ticket to the Software Packaging group in 
 fermi.servicenowservices.com, and upload the "detail log" file 
 (whose name the bootstrap prints) out as an attachment.
-
 
