@@ -2,9 +2,11 @@
 Build Manager Instructions
 ==========================
 
+A *build manager* is a designated person responsible for producing and publishing official builds of experiment or project software.
+
 The Fermilab SCD division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
 These packages are used to build experiment software stacks.
-To allow a single reference build of those software packages to work for our various experiment customers, we request they follow the following procedures when building and distributing their software.
+To allow a single *reference build* of those software packages to work for the many experiments we support, we ask experiment's build managers to follow the procedures below when building and distributing their software.
 
 This document will discuss the files that the experiment needs to maintain to facilitate these shared Spack builds as well as experiment software releases, as well as how to distribute the packages thus built to CVMFS.
 For purposes of illustration, this document will refer to the Hypothetical Experiment **hypot**: filenames, etc. using the string **hypot** would, for any particular experiment, use their own experiment name in place of **hypot**.
@@ -12,7 +14,7 @@ For purposes of illustration, this document will refer to the Hypothetical Exper
 Maintaining build environment configuration files and build recipes
 ===================================================================
 
-This will involve (at least) 2 Git repositories (besides the repositories for the experiment code packages themselves)
+This will involve two Git repositories in addition to the repositories for the experiment code packages themselves:
 
 * one for Spack build recipes, and 
 * one for Spack build environment configuration files and fragments.
@@ -20,12 +22,13 @@ This will involve (at least) 2 Git repositories (besides the repositories for th
 These two repositories for each experiment, properly configured, will allow SCD to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
 This *global solve* is the mechanism by which Spack can ensure that we produce a single consistent set of packages that will work together and which satisfy the set of constraints imposed by the recipes of all the different participating experiments.
 
-N.B. For finding new versions, Spack works best with dotted versions for packages. It is recommended that dotted tags, e.g. XX.YY.ZZ.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added.
+N.B. For finding new versions, Spack works best with dotted versions for packages.
+It is recommended that dotted tags, e.g. XX.YY.ZZ.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added to all experiment code repositories.
 
 Build environment configuration files
 -------------------------------------
 
-The reference builds and the various experiment software stacks should be built in Spack build environments [1]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
+The reference builds and the various experiment software stacks should be built in Spack build environments [#environments]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
 In particular we expect each experiment to have, under version control, a build configuration repository of at least 3 files:
 
 * A file defining lists of specs `hypot_specs.yaml`
@@ -37,14 +40,14 @@ These files should be under version control in order to provide different branch
 The files above for a particular experiment should be in a repository controlled by that experiment.
 Similarly there will be build configuration files for the various SCD projects, like **larsoft**, **phlex**, **art**, **fife**, etc.
 
-These configuration repositories should have branches with variants of the above files, allowing checking out a version of the above files which use `@develop` (or similar tags) for the version, (or building CI test builds, etc.), as well as tagged versions for their various software releases.
+These configuration repositories should have branches with variants of the above files, allowing checking out a version of the above files which use `@develop` (or whatever tag your experiment uses to mark the branch used for development) for the version, (or building CI test builds, etc.), as well as tagged versions for their various software releases.
 
 We will now discuss the format and usage of these various files in more detail.
 
 Specs files `hypot_specs.yaml`
 ------------------------------
 
-These files will be YAML [2]_ files whose contents will be a dictionary named *definitions*, defining a list of *specs*.
+These files will be YAML [#yaml]_ files whose contents will be a dictionary named *definitions*, defining a list of *specs*.
 These are usually just as package names, for example:
 
 .. code-block:: yaml
@@ -56,12 +59,12 @@ These are usually just as package names, for example:
     - hypotutils
     ...
 
-This definition list will be used in the experiment build configuration file, but also by the SCD teams building the share packages in a *global solve*. 
+This definition list will be used in the experiment build configuration file, but also by the SCD teams building the shared packages in a *global solve*. 
 
 Packages files `hypot_packages.yaml`
 ------------------------------------
 
-These YAML [2]_ files will contain a dictionary named *packages*, mapping package names to requirements lists, for example:
+These YAML [#yaml]_ files will contain a dictionary named *packages*, mapping package names to requirements lists, for example:
 
 .. code-block:: yaml
 
@@ -85,16 +88,16 @@ These YAML [2]_ files will contain a dictionary named *packages*, mapping packag
 Note that this file may add requirements to non-experiment packages (i.e. **boost** and **art**, above), if they are required for the experiment software. 
 Version restrictions (like the above example for **art**) should really be included in the dependency definitions in the appropriate package's recipe file; but can be included here if needed.
 
-.. [1] https://spack.readthedocs.io/en/latest/environments_basics.html
-
-.. [2] https://en.wikipedia.org/wiki/YAML
 
 The Build configuration file
 ----------------------------
 
-This will be an Spack environment `spack.yaml` file, with includes of the various fragments, above, and combines the various definitions from those files.  For example:
+This will be an Spack environment `spack.yaml` file, with includes of the various fragments, above, and combines the various definitions from those files.
+For example:
 
 .. code-block:: yaml
+  # Note that the SHA256 sums and the version number in this file are only
+  # examples, and are not recommended values of any real build.
 
   spack:
     config:
@@ -170,9 +173,13 @@ Note that the includes all include the SHA256 hashes of the included files, to b
 Experiment Build Recipe Repository
 ----------------------------------
 
-The experiment should have a Spack build recipe repository, with the build/install recipes for the experiment packages, and any third-party packages used by only this experiment, and not available in the main Spack builtin repository.
-Spack `documents <https://spack.readthedocs.io/en/latest/repositories.html>`__ the recipe repository structure in some detail, as well as the recipe creation `process <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html>`__ and we have some Fermi specific `recommendations <https://github.com/FNALssi/fermi-spack-tools/wiki/Spack-recipe-guidance-for-CMake-packages>`__
-for CMake recipes using Fermi cetmodules, etc.  Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
+The experiment should have a Spack build recipe repository, with the Spack recipes for:
+1.  the experiment packages
+2. any third-party packages used by only this experiment and not available in the main Spack builtin repository.
+
+Spack `documents <https://spack.readthedocs.io/en/latest/repositories.html>`__ the recipe repository structure in some detail, as well as the recipe creation `process <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html>`__.
+We have some Fermi specific `recommendations <https://github.com/FNALssi/fermi-spack-tools/wiki/Spack-recipe-guidance-for-CMake-packages>`__ for CMake recipes using Fermi cetmodules.
+Experiment repositories should be maintained by the experiment, and included in the fermi-spack-tools configs installed by our bootstrap / make_spack scripts.
 
 Build process
 =============
@@ -224,7 +231,7 @@ If you go to the `fermi-spack-tools wiki <https://github.com/FNALssi/fermi-spack
 where you give a path to where you want the spack instance to appear.
 
 You then want to make sure to install the compilers you want into your standalone instance. 
-Unless you ahve a lot of time to kill, you probalby want to install one that is already built from the *build cache mirror*.
+Unless you have a lot of time to kill, you probably want to install one that is already built from the *build cache mirror*.
 
 .. code-block:: shell
 
@@ -271,7 +278,7 @@ In a perfect world, this looks like:
   spack concretize | tee conc.out
   spack install
 
-However, we probalby wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
+However, we probably wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
 Most frequently, this involves customizing the `hypot_packages.yaml` file that the release file gets from the repository.   
 To avoid repeated updates of the config file and checksums to test a new version number, etc. you want to download that file from Git as well, and change your `spack.yaml` file to use the local copy. 
 
@@ -350,7 +357,7 @@ This will
 * include build dependencies, not just runtime ones
 
 Moving the build cache images to SciSoft
-=======================================
+========================================
 
 Now (assuming you have suitable permissions) you can upload the *build cache tarballs* to SciSoft or spack-cache-1 and update the *build cache mirror* index.  
 
@@ -423,3 +430,8 @@ The `fermi-spack-tools <https://github.com/FNALssi/fermi-spack-tools>` package h
 * creating the *build icache tarballs* of the build as Jenkins artifacts
 
 If you have gotten a Jenkins account (link needed), and have VPN, you can examine the project here (link needed) for an example of using this script. 
+
+.. rubric:: Footnotes
+
+.. [#environments] `Spack Environments documentation <https://spack.readthedocs.io/en/latest/environments_basics.html>`__
+.. [#yaml] `YAML on Wikipedia <https://en.wikipedia.org/wiki/YAML>`__
