@@ -17,7 +17,7 @@ Make a build spack instance if you don't have it, and put your spack signing key
 
 .. code-block:: shell
 
-   . /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
+   . /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.1/setup-env.sh
    spack subspack --with-padding $PWD/build_instance
    spack gpg trust $HOME/.gnupg/spack/pubring.gpg
    spack gpg trust $HOME/.gnupg/spack/secring.gpg
@@ -50,7 +50,7 @@ where the spack.yaml ends up looking like
       reuse:
         from:
         - type: environment
-          path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/var/spack/environments/larsoft-v10_11_01-unified-cuda-python-3_9-trimmed
+          path: /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.1/var/spack/environments/larsoft-v10_11_01-unified-cuda-python-3_9-trimmed
 
     # set preferred compilers, target, etc.
     packages:
@@ -168,7 +168,7 @@ This looks like:
    spack localbuildcache --local --key mykey
    scp -r bc/* scisoftbuild02.fnal.gov:/SciSoft/spack-mirror/spack-binary-cache-v3
    ssh scisoftbuild02.fnal.gov <<EOF
-     source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.0/spack_env/setup-env.sh
+     source /cvmfs/larsoft.opensciencegrid.org/spack-fnal-v1.1.1/setup-env.sh
      spack buildcache update-index /SciSoft/spack-mirror/spack-binary-cache-v3
    EOF
 
