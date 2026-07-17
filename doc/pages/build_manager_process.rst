@@ -255,6 +255,7 @@ Creating a subspack instance
 ----------------------------
 
 If you have access to one of our existing cvmfs Spack instances that is running Spack 1.0 or later, you can use our `spack subspack` extension to make a chained spack instance which shares the existing instance's packages, but lets you install new things into the local, writable one.
+When doing this, you have to first source the setup-env.sh for spack instance that has the software upon which you wish to base your build, and then run spack subspack with the --with-padding flag to have it pad the paths of new packages to a standard length for relocatability. 
 
 .. code-block:: shell
 
@@ -289,9 +290,18 @@ In a perfect world, this looks like:
   spack concretize | tee conc.out
   spack install
 
-However, we probably wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
+Note that, if your upstream Spack instance is in /cvmfs, when running the 'spack concretize' you will likely receive some warnings of the form:
+
+.. code-block:: shell
+
+  ==> Warning: Ignoring write error on readonly /cvmfs/.../config/bootstrap.yaml
+
+You can safely ignore these; Spack has a habit of overwriting some config files with the same content, and this obviously doesn't work in /cvmfs which is read-only.
+
+However, things do not always come out perfectly in or cocretization, and  we probably wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
 Most frequently, this involves customizing the `hypot-packages.yaml` file that the release file gets from the repository.
 To avoid repeated updates of the config file to test a new version number, etc. you want to download that file from Git as well, and change your `spack.yaml` file to use the local copy. 
+
 
 .. code-block:: shell
 
@@ -326,6 +336,7 @@ Installing a signing key
 
 If this is a new Spack build instance, you likely do not have any signing keys installed in it to sign your packages.  
 If your experiment has a *pgp* key or key(s) for signing official binaries already, you can add it; if you don't have one you can create one.
+Adding your own key, or an experiment one, is the same process, for a personal one you would of course use your own username and email address
 
 .. code-block:: shell
 
@@ -342,9 +353,7 @@ If your experiment has a *pgp* key or key(s) for signing official binaries alrea
   spack gpg trust secret-key-file
   rm secret-key-file public-key-file
 
-where the `somehost:/some/place/safe` should be somewhere like `/opt/hypotpro` on one of the experiment gpvm machines, etc. and should be readonly to the experiment production account, or similar.
-
-Or you may want to use a signing key specific to yourself, personally, and keep it wherever you keep such things.
+where the `somehost:/some/place/safe` for an experiment account should be somewhere like `/opt/hypotpro` on one of the experiment gpvm machines, etc. or $HOME/.gnupg/spack for a personal key,  and in either case should be only readable  by  the relevant account.
 
 Packing up your build for distribution
 ======================================
