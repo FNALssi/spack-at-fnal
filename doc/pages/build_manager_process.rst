@@ -298,7 +298,7 @@ Note that, if your upstream Spack instance is in /cvmfs, when running the 'spack
 
 You can safely ignore these; Spack has a habit of overwriting some config files with the same content, and this obviously doesn't work in /cvmfs which is read-only.
 
-However, things do not always come out perfectly in or cocretization, and  we probably wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
+However, things do not always come out perfectly in our cocretization, and  we probably wish instead to customize the `spack.yaml` file, and possibly several of the included files, to be ready for the next release.  
 Most frequently, this involves customizing the `hypot-packages.yaml` file that the release file gets from the repository.
 To avoid repeated updates of the config file to test a new version number, etc. you want to download that file from Git as well, and change your `spack.yaml` file to use the local copy. 
 
