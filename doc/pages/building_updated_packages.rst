@@ -14,6 +14,7 @@ Setting up
 ----------
 
 Make a build spack instance if you don't have it, and put your spack signing keys in it.  If you don't have a spack signing key, see `these instructions <https://fnalssi.github.io/spack-at-fnal/pages/build_manager_process.html#installing-a-signing-key>`__
+When doing this, you have to first source the setup-env.sh for spack instance that has the software upon which you wish to base your build, and then run spack subspack with the --with-padding flag to have it pad the paths of new packages to a standard length for relocatability. 
 
 .. code-block:: shell
 
@@ -82,6 +83,7 @@ When you concretize, spack should give you output that looks like:
 
 .. code-block:: bash
 
+    $ spack concretize 
     ==> Concretized 1 spec:
      -   wzwrx6v  metacat@4.1.4+client_only build_system=python_pip platform=linux os=almalinux9 target=x86_64_v3 
      -   ahw4ylu      ^py-lark@1.1.2 build_system=python_pip platform=linux os=almalinux9 target=x86_64_v3 
@@ -104,6 +106,14 @@ where each dependent package with all of its version, variant, etc flags are lis
 
 Basically, our goal is for the output of our concretize to only show a dashed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
 You might also find spack wanting to rebuild/reinstall some build dependencies that didn't get put into the upstream spack instance -- packages like py-setuptools and py-wheel -- this is okay.
+
+Note that, if your upstream Spack instance is in /cvmfs, when running the 'spack concretize' you will likely receive some warnings of the form:
+
+.. code-block:: shell
+
+  ==> Warning: Ignoring write error on readonly /cvmfs/.../config/bootstrap.yaml
+
+You can safely ignore these; Spack has a habit of overwriting some config files with the same content, and this obviously doesn't work in /cvmfs which is read-only.
 
 Getting more reuse
 ------------------
