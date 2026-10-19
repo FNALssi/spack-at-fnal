@@ -2,89 +2,46 @@
 Documentation describing Spack use at Fermilab.
 Now rendered to [fnalssi.github.io](https://fnalssi.github.io/spack-at-fnal/).
 
-## Set up to build spack-at-fnal
+## Set up the documentation environment
 
-## On a Mac
+Install [Miniforge](https://github.com/conda-forge/miniforge) or another Conda
+distribution, and ensure that `conda` is initialized in your shell. Git must
+also be available for CMake to fetch some packages upon which the build depends.
 
-### Build prerequisites
+From the root of this repository, create and activate the environment:
 
-* Building prerequisites will be _much_ faster if you have Spack
-  installed, and `git`, `cmake` (at least v3.24) and `gmake` installed
-  via [homebrew](https://brew.sh/). Note that `gmake` is an executable
-  installed by the `make` recipe.
-
-
-    brew install cmake git make
-
-* For a full list of dependencies, see `spack.yaml`.
-
-* A Python version in the range 3.10--3.13.
-  We recommend
-
-    brew install python@3.13
-
-  Look at the output of `python3 -V`. If it is in the range above, all is well.
-  If it is not, then export the environment variable `SPACK_PYTHON` to point at
-  the correct executable, e.g.:
-
-    export SPACK_PYTHON=python3.13
-
-```
-# This will make several directories under your current working directory.
-# You should first `cd` to the directory under which you want these new
-# directories to be made. A new, empty directory is recommended.
-
-# One environment variable should be set to define the location of your
-# clone of the spack_at_fnal repository.
-
-export SPACK_AT_FNAL_DIR=/dev/null  # set this correctly for your own installation
-
-export SPACK_DISABLE_LOCAL_CONFIG=true
-export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.13  # or a different version, if you must
-
-git clone https://github.com/FNALssi/spack  # we use our own clone
-git clone https://github.com/FNALssi/fnal_art.git  # repo for our recipes
-
-source spack/share/spack/setup-env.sh
-spack compiler find
-spack bootstrap now
-# spack external find cmake git gmake ninja
-spack repo add fnal_art
-
-spack mirror add --type binary --signed --scope site fnal-develop https://scisoft.fnal.gov/scisoft/spack-mirror/spack-fnal-develop
-spack buildcache keys -it
-
-spack env create docgen "${SPACK_AT_FNAL_DIR}"/spack.yaml
-spacktivate docgen
-spack concretize
-spack install
+```sh
+conda env create --name for-spack-at-fnal --file environment.yml
+conda activate for-spack-at-fnal
 ```
 
-Note that after building the environment, you should first deactivate (`despacktivate`) and then reactivate the environment to ensure that the newly-built packages are available in your `PATH` in the current shell.
+The `environment.yml` file lists the tools required to build the HTML
+documentation, including CMake, Ninja, Sphinx, and Graphviz. The example
+environment name is `for-spack-at-fnal`; you may choose your own name by
+replacing it in the creation command and all activation commands.
 
-### Set up an already-created installation
+In a new shell, activate the existing environment before building:
 
-```
-# cd to the working directory that you chose, above.
-# It will have the build, fnal_art, spack, and spack-user-cache
-# subdirectories.
-
-export SPACK_AT_FNAL_DIR=$PWD      # set this correctly for your own installation
-export SPACK_DISABLE_LOCAL_CONFIG=true
-export SPACK_USER_CACHE_PATH=`pwd`/spack-user-cache
-export SPACK_PYTHON=python3.13     # use the same as you did above
-source spack/share/spack/setup-env.sh
-spacktivate docgen
+```sh
+conda activate for-spack-at-fnal
 ```
 
-### Build spack-at-fnal locally
+## Build the HTML documentation
 
-```
-mkdir <build-dir>
-cd <build-dir>
-cmake [-GNinja] --preset=default "${SPACK_AT_FNAL_DIR}"
-ninja
+With the environment active, run these commands from the repository root:
+
+```sh
+cmake --preset=default -G Ninja -S . -B build \
+  -DSPHINX-BUILD_EXECUTABLE="$CONDA_PREFIX/bin/sphinx-build"
+cmake --build build --target doc
 ```
 
-Top level index HTML will be found as `doc/html/index.html`.
+CMake uses Sphinx from the active Conda environment. It fetches Cetmodules
+during configuration, so the first configuration requires network access.
+Use an empty build directory for the initial
+configuration. You may choose another build directory by replacing `build`
+in both commands.
+
+Open `build/doc/html/index.html` in a web browser to view the documentation.
+After editing the sources, run `cmake --build build --target doc` again to
+update the HTML.

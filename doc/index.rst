@@ -13,3 +13,5 @@ Spack at FNAL
   /pages/layered_environments.rst
   /pages/policy_on_spack_updates.rst
   /pages/related_policy_documents.rst
+  /pages/plan_for_standard_builds.rst
+  /pages/recipe_maintenance.rst

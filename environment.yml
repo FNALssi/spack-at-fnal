@@ -1,0 +1,11 @@
+channels:
+  - conda-forge
+dependencies:
+  - cmake
+  - graphviz
+  - ninja
+  - sphinx >8.0,<9.0
+  - sphinx-design
+  - sphinx-rtd-theme
+  - sphinxcontrib-jquery
+  - sphinxcontrib-moderncmakedomain

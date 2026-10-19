@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "condaEnvironment",
+      "type": "promptString",
+      "description": "Conda environment name",
+      "default": "for-spack-at-fnal"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Docs: Configure",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "run",
+        "--name",
+        "${input:condaEnvironment}",
+        "--no-capture-output",
+        "/bin/bash",
+        "-c",
+        "cmake --fresh --preset default -G Ninja -S \"$1\" -B \"$2\" -DCMAKE_MAKE_PROGRAM=\"$CONDA_PREFIX/bin/ninja\" -DFETCHCONTENT_BASE_DIR=\"$2/_deps-ninja\" -DSPHINX-BUILD_EXECUTABLE=\"$CONDA_PREFIX/bin/sphinx-build\"",
+        "vscode-task",
+        "${workspaceFolder}",
+        "${workspaceFolder}/build"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docs: Build HTML",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "run",
+        "--name",
+        "${input:condaEnvironment}",
+        "--no-capture-output",
+        "cmake",
+        "--build",
+        "${workspaceFolder}/build",
+        "--target",
+        "doc"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": "Docs: Configure",
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
