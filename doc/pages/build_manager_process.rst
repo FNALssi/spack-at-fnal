@@ -6,7 +6,8 @@ A *build manager* is a designated person responsible for producing and publishin
 
 The Fermilab SCD division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
 These packages are used to build experiment software stacks.
-To allow a single *reference build* of those software packages to work for the many experiments we support, we ask experiment's build managers to follow the procedures below when building and distributing their software.
+To allow a single *standard build* of a shared software suite and its dependencies to work for the many experiments we support, we ask experiment's build managers to follow the procedures below when building and distributing their software.
+A standard build is the SCD-designated and published collection of built packages, not its build configuration or the Spack environment exposing it; see :doc:`plan_for_standard_builds`.
 
 This document will discuss the files that the experiment needs to maintain to facilitate these shared Spack builds as well as experiment software releases, as well as how to distribute the packages thus built to CVMFS.
 For purposes of illustration, this document will refer to the Hypothetical Experiment **hypot**: filenames, etc. using the string **hypot** would, for any particular experiment, use their own experiment name in place of **hypot**.
@@ -28,7 +29,7 @@ It is recommended that dotted tags, e.g. XX.YY.ZZ.PP, be added at the same time 
 Build environment configuration files
 -------------------------------------
 
-The reference builds and the various experiment software stacks should be built in Spack build environments [#environments]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included. 
+The standard builds and the various experiment software stacks should be built using Spack environments [#environments]_, which will have configuration files (`spack.yaml`) which include (by URL) multiple shared config fragments, which are owned and controlled by the various organizations whose software is being included.
 In particular we expect each experiment to have, under version control, a build configuration repository of at least two files:
 
 * A file defining lists of specs `hypot-specs.yaml`

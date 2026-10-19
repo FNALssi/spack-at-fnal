@@ -56,6 +56,28 @@ described in the next section.
 Definition of a Standard Build
 ==============================
 
+A *standard build* is a consistent set of built packages for a software
+suite and its selected dependencies, created, designated, and published
+by SCD for shared use by supported experiments or projects. It contains
+the actual shared libraries, executables, and other installed files,
+not just descriptions of how to produce them. Teams within SCD have
+primary responsibility for different suites; SciSoft is responsible for
+the *art* and LArSoft suites.
+
+A *software suite* is a named collection of packages intended to be used
+together. A *project* coordinates maintenance of software packages and
+need not correspond to exactly one suite. Dependencies of a suite need
+not be members of that suite: a standard build of LArSoft includes the
+selected *art* and ROOT package builds, but those packages are not
+members of the LArSoft suite.
+
+A standard build is a built result, distinct from the build process,
+the *build configuration* that selects it, and any *Spack environment*
+used to expose its packages. An individual package build within a
+standard build is not itself a standard build. An independent
+experiment build is not a standard build merely because it uses the
+same configuration as an SCD-published build.
+
 The move away from UPS to Spack is intended to make it easier for
 non-SciSoft personnel to make their own builds of software stacks. At
 the same time, the SciSoft team must retain the ability to build and
@@ -63,37 +85,40 @@ test LArSoft, which requires building and testing the software stacks
 that depend upon LArSoft. Separately, the SciSoft team will also need to
 be able to build and test the software stack for *phlex*. The framework
 for allowing these distinct efforts to proceed relies on the idea of
-*standard builds*. All builds of LArSoft (and of *art*) that will be
-produced by the SciSoft team will be these standard builds. The “data
+*standard builds*. The SciSoft team will produce the SCD-designated
+standard builds of the LArSoft and *art* suites for publication to users;
+test or partial builds are not themselves standard builds. The “data
 management” software stacks will need to package data management
 clients, etc., so they do not have conflicting dependencies with the
 scientific software stacks. It is inconvenient for users of the data
 management tools (e.g., *rucio-clients*, *sam-web-client*, etc.) to have
 to “unsetup” their experiment’s software environment in order to “setup”
 the data management tools. Having the tools built with the same
-underlying libraries will allows them to be active in the same shell
+underlying libraries will allow them to be active in the same shell
 session.
 
-We distinguish two types of standard builds:
+Each package within a standard build is built with a specific set of
+variants [1]_. For example, if one experiment requires ROOT with support
+for Apache Arrow, and another requires support for Graphviz, then the
+ROOT package build shared by those experiments would include both
+options. It will be up to the collaborating LArSoft experiments to
+determine the set of options for each package included in their standard
+builds.
 
-1. A standard build of a *package* (usually consisting of all the
-   software in a single repository, e.g., for LArSoft), which is built
-   with a specific set of variants [1]_. For example, if one experiment
-   requires ROOT with support for Apache Arrow, and another requires
-   support for Graphviz, then the standard build of ROOT would include
-   both the Apache Arrow and the graphviz options in the standard build.
-   It will be up to the collaborating LArSoft experiments to determine
-   the set of options to be included in the standard build of each
-   package.
+Each suite's standard build is a subset of the *global build* described
+below. Standard builds of different suites may overlap through shared
+dependency builds. For example, standard builds of *art* and LArSoft can
+include the same ROOT package build.
 
-1. A standard build of a *suite*, which is comprised of consistent
-   standard builds of all the packages in the suite. The SciSoft team
-   will create a Spack environment for each standard build of a suite.
-   All standard builds of packages that are part of a suite will be
-   pushed to an appropriate binary build cache [2]_ and also installed
-   in CVMFS. The SciSoft team will make available environment definition
-   files for each standard build of a suite through CVMFS, or
-   ``https://scisoft.fnal.gov``, or both.
+The SciSoft team will create a Spack environment for each standard build
+of a suite. The package builds within it will be pushed to an appropriate
+build cache [2]_ and also installed in a CVMFS package area. The SciSoft
+team will make available build configuration and environment definition
+files for each standard build through CVMFS, or
+``https://scisoft.fnal.gov``, or both. Publishing only those files does
+not publish a standard build; the built packages must also be available.
+Distributing the same package builds through both a build cache and
+CVMFS does not create two different standard builds.
 
 The Plan for Standard Builds and Releases
 =========================================
@@ -114,30 +139,38 @@ needed during the transition from UPS to Spack.
 
    PRs from experiments to recipes for 3rd party packages, and to the
    *art* and LArSoft packages will be welcomed. The procedure for
-   handling such PRs will be described in a separate document.
+   maintaining recipes is described in :doc:`recipe_maintenance`;
+   additional PR requirements are described separately.
 
 2. For each new release of the *art* or LArSoft suites, the SciSoft team
    will create a number of standard builds. Each of these builds will
    use a specific, single source code version for each of the packages
-   in the software stack. First-party software will be built in both
-   *debug* and *profile* modes. Third-party packages for which *debug*
-   builds are useful will also be built in both *debug* and *profile*
-   mode. Others will be built in *release* mode only (i.e., in the
-   native build mode for the package). Each package will be built using
-   a small number of supported compilers (and specific versions of those
-   compilers). The LArSoft collaboration and the SciSoft team will
-   together decide on compilers to be supported.
+   in the software stack. Across these standard builds, first-party
+   software will be built in both *debug* and *profile* modes.
+   Third-party packages for which *debug* builds are useful will also
+   be built in both *debug* and *profile* modes. Others will be built in
+   *release* mode only (i.e., in the
+   native build mode for the package). Across these builds, each package
+   will be built using a small number of supported compilers (and
+   specific versions of those compilers). The LArSoft collaboration and
+   the SciSoft team will together decide on compilers to be supported.
+
+   Each selected, consistent combination of compiler versions and
+   package build modes produces a distinct standard build. Thus one
+   software release can have several standard builds; the supported
+   compiler and build-mode combinations are not all combined into one
+   standard build.
 
 3. A Spack environment will be created corresponding to each standard
    build of a suite. Users of the standard builds will be able to use
    ``spack env activate`` (or the alias, ``spacktivate``) to activate
-   the standard environment, and also build their experiment software
-   against that standard environment. Users of the standard builds can
-   also do development with Spack MPD, which does not require activation
-   of the environment. Users who are developing all or part of LArSoft
-   itself will be able to set up the standard environment, then build
-   the relevant parts of LArSoft in addition to their own experiment’s
-   software stack.
+   the corresponding environment, and also build their experiment
+   software against the package builds it exposes. Users of the standard
+   builds can also do development with Spack MPD, which does not require
+   activation of the environment. Users who are developing all or part
+   of LArSoft itself will be able to activate the corresponding
+   environment, then build the relevant parts of LArSoft in addition to
+   their own experiment’s software stack.
 
 4. Experiments that are part of the LArSoft collaboration should use
    standard builds, preferably one of the *most recent*, as the base for
@@ -248,16 +281,35 @@ How we will organize Spack environments
 Layered Spack environments
 --------------------------
 
-The SciSoft team will create spack environments for our own use and for
-the use of the experiments. To ensure binary compatibility across the
-several environments the SciSoft team will use Spack to conretize and
-build a *global* build. This global build will then be used to create
-the environment layers each of which contains a subset of the global
-build and which can be used directly when desired. By installing a
-consistent set of packages into the build, we ensure the use of those
-packages in all layered environments made available, while still
-allowing experiments to replace any portions of the dependency graph of
-packages when they have a special need to do so. The figure titled
+SCD will create Spack environments for its own use and for the use of
+the experiments. To ensure binary compatibility across the several
+environments, SCD will perform a *global solve*: Spack concretizes the
+abstract specs and constraints from participating experiments and
+projects into one consistent set of concrete specs.
+
+A *spec* describes a package configuration, including its version,
+variants, compiler, flags, architecture, and dependencies. An *abstract
+spec* leaves choices unresolved; a *concrete spec* fixes all those
+choices and the full dependency graph, describing exactly one package
+build. A spec is not the built libraries or executables. These terms
+follow the `latest Spack documentation
+<https://spack.readthedocs.io/en/latest/spec_syntax.html#software-model>`_.
+
+SCD will realize the concrete specs through new or reused package
+builds. The resulting collection of built packages is the *global
+build*. Each suite-level standard build is a subset of that global
+build containing the suite's package builds and their selected
+dependencies. Standard builds may overlap by sharing dependency builds.
+
+A *layered environment* is a Spack environment providing one shareable
+layer of software. Each layered environment exposes a subset of the
+global build, rather than selecting an independent set of package
+builds. A layer need not contain all the packages in a suite's standard
+build, since dependencies may be exposed through lower layers. This
+organization allows experiments to reuse consistent package builds,
+while still allowing them to replace portions of the dependency graph
+when they have a special need. The modified experiment build is not
+itself an SCD standard build. The figure titled
 :ref:`The proposed Spack environment layers <spack_environments>` shows for illustrative
 purposes how spack environments might be layered. A description of the
 layers shown in this figure is provided below. Details of the layers and
@@ -272,7 +324,7 @@ show the direction of the allowed dependencies. The connection to the
 
 .. graphviz:: ../static/environment_graph.gv
    :align: center
-   :caption: The proposed Spack environment layers. The *art*, *fife*, and *nulite* layers are also used by experiments and projects that do not depend on LArSoft. Yellow boxes indicate packages directly maintained by CSAID.
+   :caption: The proposed Spack environment layers. The *art*, *fife*, and *nulite* layers are also used by experiments and projects that do not depend on LArSoft. Yellow boxes indicate packages directly maintained by SCD.
    :name: spack_environments
 
 1. The *tools* layer includes tools that are used for development.
@@ -280,7 +332,7 @@ show the direction of the allowed dependencies. The connection to the
    *cmake*, and *ninja*. Packages in other layers do not have link
    dependencies on this layer.
 
-2. The *substrate* layer includes products for which we (CSAID) are not
+2. The *substrate* layer includes products for which we (SCD) are not
    in control of the source code. Examples include *ROOT*, *Geant4*, and
    *Catch2*. *Python* should probably be included here because some code
    needs to link against the *libpython.so*, and because the Python
@@ -290,7 +342,7 @@ show the direction of the allowed dependencies. The connection to the
 3. The *fife* layer includes products, excluding *art*, needed to build
    higher-level layers, along with data management and authentication
    client packages. These products are developed by other groups in
-   CSAID. One example is *ifdhc*.
+   SCD. One example is *ifdhc*.
 
 4. The *art* layer includes all of the products that are currently part
    of the *critic* suite, and which are all products that are developed
@@ -299,7 +351,7 @@ show the direction of the allowed dependencies. The connection to the
 
 5. The *nulite* layer includes products that are needed to build
    *larsoft* (and *novasoft*)but which are not part of *art* or *fife*,
-   and which are controlled by other groups in CSAID. Examples are
+   and which are controlled by other groups in SCD. Examples are
    *GENIE* and *nusimdata*.
 
 6. The *larsoft* layer includes all of the LArSoft products. It also
@@ -317,7 +369,9 @@ between limited subgroups of experiments is desired.
 Building and distributing layered environments
 ----------------------------------------------
 
-The SciSoft team will be responsible for building and distributing
+SCD is responsible for creating and publishing standard builds, with
+its teams primarily responsible for different suites. The SciSoft team
+will be responsible for building and distributing
 releases of the *tools*, *substrate*, and *art* layers, while the Data
 Management team will be responsible for building and distributing the
 *fife* layer. Releases of *tools* and *substrate* will be made as needed
@@ -361,12 +415,13 @@ should be used.
 Other Notes on the Use of Spack
 ===============================
 
-The release of Spacke 1.0 has introduced the promise from the Spack
-principle developers that new releases of Spack 1.x will be compatible
+The release of Spack 1.0 has introduced the promise from the Spack
+principal developers that new releases of Spack 1.x will be compatible
 with the recipes from early 1.x versions. This was not true for pre-1.0
 versions of Spack. In addition, Spack package recipes have been moved
-out of the Spack core repository and into their own repository, which is
-versioned separately. Upgrades to the Spack inftrastructure should no
+out of the Spack core repository and into
+`spack/spack-packages <https://github.com/spack/spack-packages>`_, which
+is versioned separately. Upgrades to the Spack infrastructure should no
 longer require rebuild of the entire software stack.
 
 In order to reduce unnecessary rebuilding of the software stack,
@@ -410,6 +465,20 @@ Version 3 (2026-06-09)
 3. Add a description of which dependent LArSoft and experiment
    repositories will be built and tested for each LArSoft pull request.
 
+Version 4 (2026-10-19)
+----------------------
+
+1. Define standard builds as SCD-designated and published suite-level
+   built results, including selected dependencies, rather than
+   individual package builds or Spack environments.
+
+2. Distinguish global solves, global builds, software suites, projects,
+   and layered environments; clarify that suite-level standard builds
+   are potentially overlapping subsets of the global build.
+
+3. Use current SCD terminology and clarify spec usage against the latest
+   Spack documentation.
+
 .. [1]
    In Spack, a variant is a way to specify build options or
    configuration choices for a package. Variants allow the user to
@@ -418,8 +487,8 @@ Version 3 (2026-06-09)
    choose dependencies, or set specific configuration parameters.
 
 .. [2]
-   A *binary build cache*, often shortened to *build cache*, is a
-   location in which pre-built libraries, etc., are kept in the form of
-   tarballs. A ``spack install`` command command can download and untar
-   the already-built package, rather than downloading source code and
+   A *build cache* is a collection of Spack binary package archives and
+   associated spec metadata made available for reuse by other Spack
+   installations. A ``spack install`` command can download and install
+   an already-built package rather than downloading source code and
    building the package.
