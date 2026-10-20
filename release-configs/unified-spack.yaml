@@ -8,7 +8,7 @@ spack:
   - path: gcc-12-toolchain.yaml
 
   # Packages defintions.
-  # These are version and variant requirements for a package suite
+  # Version and variant requirements constrain packages; they do not select them.
   - path: larsoft-packages.yaml
   - path: nusofthep-packages.yaml
   - path: art-packages.yaml
@@ -27,7 +27,8 @@ spack:
   - path: exp-develop-packages.yaml
 
   # Spec definitions.
-  # These are definitions of the root specs for a package suite
+  # Root specs explicitly select suite, ancillary, and experiment packages.
+  # These lists do not define suite membership; dependencies are added by Spack.
   - path: art-specs.yaml
   - path: nusofthep-specs.yaml
   - path: larsoft-specs.yaml

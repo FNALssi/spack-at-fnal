@@ -20,6 +20,10 @@ Fermilab's Scientific Computing Division, which develops and distributes softwar
 **Software suite**:
 A named collection of software packages intended to be developed and used together. Suite membership is distinct from dependency relationships and from the project that coordinates maintenance.
 
+**Ancillary package**:
+A package outside a particular software suite and its build-time and run-time dependency closure, selected for inclusion in that suite's standard build to support experiments' needs. Ancillary status is relative to the suite; inclusion in its standard build does not make the package a suite member or a dependency of the suite.
+_Avoid_: companion package, supplementary package
+
 **Project**:
 A coordinated maintenance grouping for software packages. A project need not correspond to exactly one software suite.
 
@@ -41,10 +45,10 @@ The Spack concretization of abstract specs and constraints from participating ex
 _Avoid_: global build (when referring specifically to constraint solving)
 
 **Global build**:
-The consistent collection of built packages realizing a global solve, including any reused package builds. Suite-level standard builds are subsets of this collection and may overlap through shared dependency builds.
+The consistent collection of built packages realizing a global solve, including any reused package builds. Standard builds drawn from this collection may overlap through shared package builds.
 
 **Standard build**:
-A consistent subset of a global build containing a software suite's built packages and their selected dependencies, created, designated, and published by SCD for shared use by supported experiments or projects. Each standard build realizes one selected build configuration and is distinct from that configuration, any individual package build within it, and any Spack environment or distribution location used to expose its packages.
+An SCD-created, designated, and published collection containing all of a software suite, selected ancillary packages, and the complete build-time and run-time dependency closure of both, including reused package builds, for shared use by supported experiments or projects; the collection supports coexistence and supported workflows without package conflicts, including ABI compatibility where applicable. It is a particular collection of package builds, not its configuration or distribution: changing membership or selected package builds yields a different standard build.
 _Avoid_: reference build
 
 **Spec**:

@@ -43,7 +43,7 @@ goals of this plan are several:
    experiments the software the team develops or contributes to,
    including the *art* framework, LArSoft, and eventually \*phlex.
 2. To provide the experiments greater flexibility in building software
-   not provided in the suite of products delivered by the SciSoft team,
+   not provided in the collection of packages delivered by the SciSoft team,
    while also providing a clear path for sharing effort between
    experiments.
 3. To provide more flexibility for experiments to support building their
@@ -56,13 +56,23 @@ described in the next section.
 Definition of a Standard Build
 ==============================
 
-A *standard build* is a consistent set of built packages for a software
-suite and its selected versions and variants of dependencies, created, designated, and published
-by SCD for shared use by supported experiments or projects. It contains
-the actual shared libraries, executables, and other installed files,
-not just descriptions of how to produce them. Teams within SCD have
-primary responsibility for different suites; SciSoft is responsible for
-the *art* and LArSoft suites.
+A *standard build* is a consistent collection of built packages created,
+designated, and published by SCD for shared use by supported experiments
+or projects. It includes:
+
+* every package in a software suite;
+* selected *ancillary packages* needed by the supported experiments; and
+* the complete build-time and run-time dependency closure of both the
+  suite and the selected ancillary packages, including transitive
+  dependencies.
+
+The selected versions and variants determine which package builds
+realize this collection; they do not permit required dependencies to be
+omitted. The collection contains actual shared libraries, executables,
+and other installed files, not just descriptions of how to produce them.
+It includes reused package builds, not only packages newly built for
+that standard build. Teams within SCD have primary responsibility for
+different suites; SciSoft is responsible for the *art* and LArSoft suites.
 
 A *software suite* is a named collection of packages intended to be developed and used
 together. A *project* coordinates maintenance of software packages and
@@ -71,12 +81,48 @@ not be members of that suite: a standard build of LArSoft includes the
 selected *art* and ROOT package builds, but those packages are not
 members of the LArSoft suite.
 
+An *ancillary package* is outside the suite and its build-time and
+run-time dependency closure, but is selected for inclusion in the
+standard build to support experiments' needs. For example, SciSoft's
+standard build of LArSoft includes *fife-utils*, which the experiments
+need but on which LArSoft does not depend. Including it does not make it
+part of the LArSoft suite. Ancillary status is relative to a suite: a
+package ancillary to one suite may be a dependency of another. The
+dependencies of an ancillary package belong in the standard build even
+when the suite itself does not need them.
+
+The responsible SCD team and supported experiments jointly select the
+ancillary packages. They may agree on different membership for different
+supported platforms or configurations; membership must be documented
+for each standard build. Inclusion does not extend to every package any
+experiment might need.
+
+Consistency includes ABI compatibility where applicable and compatible
+shared dependencies, but is not limited to these properties. The suite
+and ancillary packages must coexist in the same supported software
+environment and perform their supported workflows without conflicts
+caused by the combined package collection. This includes Python modules,
+command-line tools, shared libraries, and their relevant interactions.
+The guarantee does not cover external-service availability, unsupported
+uses, or experiment physics validation. A successful global solve or
+ABI compatibility alone does not establish this functional compatibility;
+the LArSoft PR CI checks described below have a narrower scope. This
+definition does not specify an additional validation procedure.
+
 A standard build is a built result, distinct from the build process,
 the *build configuration* that selects it, and any *Spack environment*
 used to expose its packages. An individual package build within a
 standard build is not itself a standard build. An independent
 experiment build is not a standard build merely because it uses the
 same configuration as an SCD-published build.
+
+A standard build is one particular collection of package builds.
+Changing its membership or any selected package build produces a
+different standard build, even if the suite's release version is
+unchanged. This includes changes to ancillary-package versions,
+compilers, targets, Python versions, CUDA support, variants, or package
+build modes. Independently distributing a compatible package update
+does not automatically include it in an existing standard build.
 
 The move away from UPS to Spack is intended to make it easier for
 non-SciSoft personnel to make their own builds of software stacks. At
@@ -87,10 +133,11 @@ be able to build and test the software stack for *phlex*. The framework
 for allowing these distinct efforts to proceed relies on the idea of
 *standard builds*. The SciSoft team will produce the SCD-designated
 standard builds of the LArSoft and *art* suites for publication to users;
-test or partial builds are not themselves standard builds. The “data
-management” software stacks will need to package data management
-clients, etc., so they do not have conflicting dependencies with the
-scientific software stacks. It is inconvenient for users of the data
+test or partial builds are not themselves standard builds. Ancillary
+packages include selected data management clients. The “data management”
+software stacks will need to package data management clients, etc., so
+they do not have conflicting dependencies with the scientific software
+stacks. It is inconvenient for users of the data
 management tools (e.g., *rucio-clients*, *sam-web-client*, etc.) to have
 to “unsetup” their experiment’s software environment in order to “setup”
 the data management tools. Having the tools built with the same
@@ -105,20 +152,30 @@ options. It will be up to the collaborating LArSoft experiments to
 determine the set of options for each package included in their standard
 builds.
 
-Each suite's standard build is a subset of the *global build* described
-below. Standard builds of different suites may overlap through shared
-dependency builds. For example, standard builds of *art* and LArSoft can
+In the proposed global-solve workflow, each suite's standard build is a
+subset of the *global build* described below. This is a property of the
+workflow, not a prerequisite for being a standard build; the definition
+also applies to SciSoft's standard builds produced without a global
+solve. Standard builds of different suites may overlap through shared
+package builds. For example, standard builds of *art* and LArSoft can
 include the same ROOT package build.
 
 The SciSoft team will create a Spack environment for each standard build
-of a suite. The package builds within it will be pushed to an appropriate
-build cache [2]_ and also installed in a CVMFS package area. The SciSoft
-team will make available build configuration and environment definition
-files for each standard build through CVMFS, or
+of a suite. Its package builds will be made available through appropriate
+build caches [2]_ and CVMFS package areas. The SciSoft team will make
+available build configuration and environment definition files for each
+standard build through CVMFS, or
 ``https://scisoft.fnal.gov``, or both. Publishing only those files does
-not publish a standard build; the built packages must also be available.
+not publish a standard build; all its built packages must also be available.
 Distributing the same package builds through both a build cache and
 CVMFS does not create two different standard builds.
+
+The collection may span distribution locations and layered environments;
+no single Spack installation, environment, or build cache is required to
+contain all of it. For example, build-only dependencies may be available
+separately from a runtime installation. An upload containing only newly
+built packages is not the complete standard build: reused package builds
+and all required dependencies remain part of the collection.
 
 The Plan for Standard Builds and Releases
 =========================================
@@ -297,17 +354,20 @@ follow the `latest Spack documentation
 
 SCD will realize the concrete specs through new or reused package
 builds. The resulting collection of built packages is the *global
-build*. Each suite-level standard build is a subset of that global
-build containing the suite's package builds and their selected
-dependencies. Standard builds may overlap by sharing dependency builds.
+build*. In this workflow, each standard build is a subset of that global
+build containing all the suite's package builds, selected ancillary
+package builds, and the complete build-time and run-time dependency
+closure of both. Standard builds may overlap by sharing package builds.
 
 A *layered environment* is a Spack environment providing one shareable
 layer of software. Each layered environment exposes a subset of the
 global build, rather than selecting an independent set of package
 builds. A layer need not contain all the packages in a suite's standard
-build, since dependencies may be exposed through lower layers. This
-organization allows experiments to reuse consistent package builds,
-while still allowing them to replace portions of the dependency graph
+build, since dependencies and ancillary packages may be exposed through
+other layers. Layer membership is distinct from suite membership and
+from the contents of a standard build. This organization allows
+experiments to reuse consistent package builds, while still allowing
+them to replace portions of the dependency graph
 when they have a special need. The modified experiment build is not
 itself an SCD standard build. The figure titled
 :ref:`The proposed Spack environment layers <spack_environments>` shows for illustrative
@@ -401,7 +461,10 @@ Similarly, the SciSoft team will build and distribute releases of the
 layer remains the responsibility of the authors of that code.
 
 The SciSoft team will build and distribute releases of the *larsoft*
-layer as described above.
+layer as described above. A LArSoft standard build spans this layer and
+the relevant package builds in other layers, including selected ancillary
+packages and the complete build-time and run-time dependency closure;
+it is not just the contents of the *larsoft* layer.
 
 Each experiment retains the responsibility for building and distributing
 its own *experiment* layer.
@@ -465,18 +528,29 @@ Version 3 (2026-06-09)
 3. Add a description of which dependent LArSoft and experiment
    repositories will be built and tested for each LArSoft pull request.
 
-Version 4 (2026-10-19)
+Version 4 (2026-10-20)
 ----------------------
 
 1. Define standard builds as SCD-designated and published suite-level
-   built results, including selected dependencies, rather than
-   individual package builds or Spack environments.
+   built results rather than individual package builds or Spack
+   environments. A standard build contains the entire suite, selected
+   ancillary packages, and the complete build-time and run-time
+   dependency closure of both, including reused package builds.
 
-2. Distinguish global solves, global builds, software suites, projects,
+2. Define ancillary packages relative to a suite and describe joint
+   selection, configuration-specific membership, and the supported
+   workflow compatibility guarantee.
+
+3. Distinguish global solves, global builds, software suites, projects,
    and layered environments; clarify that suite-level standard builds
-   are potentially overlapping subsets of the global build.
+   are potentially overlapping subsets of the global build in the
+   proposed global-solve workflow, not as a prerequisite for being a
+   standard build.
 
-3. Use current SCD terminology and clarify spec usage against the latest
+4. Separate standard-build identity from suite release versions,
+   distribution locations, and compatible package updates.
+
+5. Use current SCD terminology and clarify spec usage against the latest
    Spack documentation.
 
 .. [1]

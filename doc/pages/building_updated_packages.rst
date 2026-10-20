@@ -1,14 +1,23 @@
 Building New Packages
 =====================
 
-Often we need to update versions of packages in our environment, like 
-data management tools, etc. that are released on a different schedule
-than the main software releases; maintainers may wish to distribute
-a new version of a package compatible with the existing distribution.
+Often we need to update package builds exposed by our Spack environment,
+like ancillary data management tools that are released on a different
+schedule than the main software releases; maintainers may wish to distribute
+a new version of a package compatible with an existing standard build
+or experiment software stack.
 Or we may need to build an altogether new package which we would like
-to be compatible with an existing package suite.
+to be compatible with that collection of built packages.
 Then users can ``spack load`` the new package version without changing 
 other packages out from underneath their current environment.
+
+A compatible package update is not automatically part of an existing
+standard build. A standard build is a particular SCD-designated and
+published collection, including all suite packages, selected ancillary
+packages, and the complete build-time and run-time dependency closure
+of both. Selecting a new package build or changing membership produces
+a different standard build, even if the suite's release version stays
+the same; see :doc:`plan_for_standard_builds`.
 
 Setting up
 ----------
@@ -106,6 +115,12 @@ where each dependent package with all of its version, variant, etc flags are lis
 
 Basically, our goal is for the output of our concretize to only show a dashed entry for our new version of our package, and possibly one or two supporting packages not used by anything else in our software environments.
 You might also find spack wanting to rebuild/reinstall some build dependencies that didn't get put into the upstream spack instance -- packages like py-setuptools and py-wheel -- this is okay.
+An upstream installation need not contain every package in the standard
+build it exposes. Build-only dependencies may be available elsewhere;
+their absence from this installation does not remove them from the
+standard build's complete dependency closure. Rebuilding or reinstalling
+such a dependency for this package update does not itself update the
+published standard build.
 
 Note that, if your upstream Spack instance is in /cvmfs, when running the 'spack concretize' you will likely receive some warnings of the form:
 
@@ -214,5 +229,12 @@ It is recommended to do these explicitly by hash values like this so you don't i
 modify the wrong instances.
 The -D flag says to *not* similarly deprecate the dependencies of those packages.
 Again, this is to not modify more things than you meant to.
+
+This changes which installed package users receive when the deprecated
+package is accessed; it does not redefine the package collection in the
+original standard build. Publishing an updated standard build is
+distinct from changing an installation. Keeping the original standard
+build available requires retaining access to its original package
+builds, possibly through other distribution locations.
 
 You can read more about ``spack deprecate`` in the `Spack documentation <https://spack.readthedocs.io/en/latest/packaging_guide_creation.html#deprecating-old-versions>`__

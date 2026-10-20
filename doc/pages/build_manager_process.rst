@@ -6,8 +6,12 @@ A *build manager* is a designated person responsible for producing and publishin
 
 The Fermilab SCD division develops various software packages that are shared by multiple experiments, and built and distributed using the Spack package manager.
 These packages are used to build experiment software stacks.
-To allow a single *standard build* of a shared software suite and its dependencies to work for the many experiments we support, we ask experiment's build managers to follow the procedures below when building and distributing their software.
-A standard build is the SCD-designated and published collection of built packages, not its build configuration or the Spack environment exposing it; see :doc:`plan_for_standard_builds`.
+To allow a single *standard build* to work for the many experiments we support, we ask experiment's build managers to follow the procedures below when building and distributing their software.
+A standard build is the SCD-created, designated, and published collection containing all packages in a software suite, selected ancillary packages, and the complete build-time and run-time dependency closure of both, including reused package builds.
+Ancillary packages, such as *fife-utils* for LArSoft, support experiments' needs without being suite members or dependencies of the suite.
+The responsible SCD team and supported experiments jointly select ancillary membership for each standard build.
+The collection must support coexistence and supported workflows without conflicts caused by its combined packages, including ABI compatibility where applicable; see :doc:`plan_for_standard_builds` for the guarantee's scope.
+A standard build is not its build configuration, the Spack environment exposing it, or the contents of a particular installation or upload.
 
 This document will discuss the files that the experiment needs to maintain to facilitate these shared Spack builds as well as experiment software releases, as well as how to distribute the packages thus built to CVMFS.
 For purposes of illustration, this document will refer to the Hypothetical Experiment **hypot**: filenames, etc. using the string **hypot** would, for any particular experiment, use their own experiment name in place of **hypot**.
@@ -21,7 +25,11 @@ This will involve two Git repositories in addition to the repositories for the e
 * one for Spack build environment configuration files and fragments.
 
 These two repositories for each experiment, properly configured, will allow SCD to build releases of shared packages that can be reused by all the various groups, by combining them all into a *global solve*.
-This *global solve* is the mechanism by which Spack can ensure that we produce a single consistent set of packages that will work together and which satisfy the set of constraints imposed by the recipes of all the different participating experiments.
+This *global solve* selects a single consistent set of concrete specs satisfying the constraints imposed by the recipes and build configurations of the participating experiments.
+The solve selects consistent concrete specs; the new or reused package
+builds realizing them form the *global build*. Concretization alone does
+not establish the supported-workflow compatibility required of a
+standard build.
 
 N.B. For finding new versions, Spack works best with dotted versions for packages.
 It is recommended that dotted tags, e.g. XX.YY.ZZ.PP, be added at the same time that vXX_YY_ZZ_PP tagged versions are added to all experiment code repositories.
@@ -67,6 +75,9 @@ These are usually just as package names, for example:
 This definition list will be used in the experiment build configuration file, but also by the SCD teams building the shared packages in a *global solve*. 
 
 Note that in this example `justin` is not part of the Hypot experiment software, but is a third party package that needs to be available with the experiment's software.
+These lists select *root specs*: packages explicitly requested in the environment.
+They can include suite packages, ancillary packages, and experiment-specific packages; a root-spec list is not itself a declaration of suite membership.
+Ancillary packages that are not dependencies of another requested package must be explicitly selected so that Spack includes them and their dependencies.
 
 Packages files `hypot-packages.yaml`
 ------------------------------------
@@ -94,6 +105,8 @@ These YAML [#yaml]_ files will contain a dictionary named *packages*, mapping pa
 
 A non-experiment package should only be included here if the experiment requires a specific variant of that package that is *not* required by any recipe in the experiment's recipe repository.
 This may happen, for example, if analysis code that is not part of the repository requires the variant.
+Package requirements constrain a package if it is included; they do not request its inclusion.
+An ancillary package not already included as a dependency of another requested package must therefore be selected in the root specs, not merely mentioned in the requirements.
 
 Specifying a version for a shared package (*e.g.* `art`) is discouraged.
 Strict API requirements should be expressed in package recipes, not here.
@@ -173,7 +186,7 @@ For example:
         variants:
         - generator=ninja
         - build_type=Release
-        - cxxstd=17  # This is needed here, and should be the same as in the unified build
+        - cxxstd=17  # This should match the reused standard build
         target:
         - x86_64_v3  # Specified so that the build is not specialized for the build machine
 
@@ -374,6 +387,12 @@ This will
 * only include packages from the local spack instance
 * omit packages installed from a *build cache mirror* 
 * include build dependencies, not just runtime ones
+
+These tarballs contain only the newly built local packages selected by
+the command, not the complete experiment software stack or any reused
+standard build. Reused package builds remain part of the resulting
+software collection and must remain available from their published
+distribution locations.
 
 Moving the build cache images to SciSoft
 ========================================
