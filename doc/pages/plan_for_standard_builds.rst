@@ -57,14 +57,14 @@ Definition of a Standard Build
 ==============================
 
 A *standard build* is a consistent set of built packages for a software
-suite and its selected dependencies, created, designated, and published
+suite and its selected versions and variants of dependencies, created, designated, and published
 by SCD for shared use by supported experiments or projects. It contains
 the actual shared libraries, executables, and other installed files,
 not just descriptions of how to produce them. Teams within SCD have
 primary responsibility for different suites; SciSoft is responsible for
 the *art* and LArSoft suites.
 
-A *software suite* is a named collection of packages intended to be used
+A *software suite* is a named collection of packages intended to be developed and used
 together. A *project* coordinates maintenance of software packages and
 need not correspond to exactly one suite. Dependencies of a suite need
 not be members of that suite: a standard build of LArSoft includes the

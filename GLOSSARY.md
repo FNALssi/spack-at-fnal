@@ -18,7 +18,7 @@ A software package developed or maintained for use by multiple experiments or pr
 Fermilab's Scientific Computing Division, which develops and distributes software packages and is responsible for creating standard builds. Teams within SCD have primary responsibility for different software suites.
 
 **Software suite**:
-A named collection of software packages intended to be used together. Suite membership is distinct from dependency relationships and from the project that coordinates maintenance.
+A named collection of software packages intended to be developed and used together. Suite membership is distinct from dependency relationships and from the project that coordinates maintenance.
 
 **Project**:
 A coordinated maintenance grouping for software packages. A project need not correspond to exactly one software suite.
